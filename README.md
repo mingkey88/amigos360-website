@@ -243,6 +243,19 @@ The colour lockup contains white shapes (`.cls-8`) that are **knockouts** — th
 - [ ] Remaining five pages
 - [ ] Same-day turnaround asterisk on the pricing page needs its footnote text
 
+### Checked against the client copy doc
+
+Verified mechanically against `Amigos - Website - Sitemap + Copy - v1`: all 42 body-copy strings present on the right page, all 8 FAQ questions and answers word-identical, the struck-through hero clause (`~~Whether you need print or digital marketing assets,~~`) correctly omitted.
+
+Two structural fixes were needed — text was right, paragraphing was not:
+
+- **Hero sub is two paragraphs** in the source, not one run-on line
+- **Every FAQ answer is 2–3 paragraphs** in the source; all eight had been flattened to one
+
+Both now match the source exactly (2/2/3/3/2/3/2/2 paragraphs). Keep it that way when editing — `.faq-para` and `.hero-sub-follow` carry the spacing.
+
+**The source specifies no pricing H1 and no pricing intro**, and its tier cells are empty — so the heading, the intro and the whole tier distribution are still awaiting client copy.
+
 > All supplied copy is used **verbatim**. Nothing in the marketing copy was invented, shortened, or reworded. Placeholder strings are limited to functional labels (`Client logo 01`, `S$X,XXX/mo`) and are listed above.
 
 ---

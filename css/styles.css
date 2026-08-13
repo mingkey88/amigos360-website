@@ -573,6 +573,11 @@ summary:focus-visible {
   max-width: 46ch;
 }
 
+/* The source copy sets these as two paragraphs, not one run-on line. */
+.hero-sub-follow { margin-top: 14px; }
+
+.faq-para + .faq-para { margin-top: 0.9em; }
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
