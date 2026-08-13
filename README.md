@@ -198,7 +198,9 @@ Every module guards on element presence, so one file serves every page.
 - `amigos360-owl-{...}.svg` — owl mark alone, derived by re-`viewBox`ing the full lockup to `432 -4 154 184`
 - `amigos360-owl-wash.svg` — owl in `#DCEDF6`, the hero's low-emphasis bleed shape
 
-Navbar uses the deep-slate full logo on paper; footer uses reverse-white on deep-slate.
+Navbar uses the **full-colour** lockup on paper; footer uses reverse-white on deep-slate; the sign-in card still uses deep-slate.
+
+The colour lockup contains white shapes (`.cls-8`) that are **knockouts** — they read as the paper showing through, not as missing artwork. Only place it on a light ground. On deep-slate or cerulean, use reverse-white instead.
 
 ---
 
