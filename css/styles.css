@@ -71,7 +71,7 @@
      the exact moment the eye is on the element. */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --reveal-dur: 600ms;
-  --reveal-step: 60ms;   /* stagger interval */
+  --reveal-step: 70ms;   /* stagger interval, inside the 30-80ms band */
 }
 
 /* ===== RESET & BASE ===== */
@@ -827,15 +827,8 @@ summary:focus-visible {
 }
 .js-on .reveal-visible { opacity: 1; transform: none; }
 
-/* Stagger. Nothing should arrive all at once, but a long grid must not crawl —
-   the interval caps at the 7th child so 16 portfolio tiles finish in 360ms,
-   not a second. Webflow equivalent: per-item delay on the scroll interaction. */
-.js-on .reveal-stagger .reveal:nth-child(2) { transition-delay: calc(var(--reveal-step) * 1); }
-.js-on .reveal-stagger .reveal:nth-child(3) { transition-delay: calc(var(--reveal-step) * 2); }
-.js-on .reveal-stagger .reveal:nth-child(4) { transition-delay: calc(var(--reveal-step) * 3); }
-.js-on .reveal-stagger .reveal:nth-child(5) { transition-delay: calc(var(--reveal-step) * 4); }
-.js-on .reveal-stagger .reveal:nth-child(6) { transition-delay: calc(var(--reveal-step) * 5); }
-.js-on .reveal-stagger .reveal:nth-child(n+7) { transition-delay: calc(var(--reveal-step) * 6); }
+/* Stagger delays are set in JS from --reveal-step, keyed to what arrives in the
+   same frame rather than to DOM position. See initReveal() for why. */
 
 /* The signature motif, moving: each step's dial sweeps a quarter turn into
    place as the step arrives. Rotating the disc drags its filled wedge with it,
@@ -846,14 +839,8 @@ summary:focus-visible {
   transition: transform 700ms var(--ease-out);
 }
 
-/* Each dial sweeps as its OWN step arrives. `transition-delay: inherit` cannot
-   do this — .step-dial's parent is .step-topline, not the staggered .reveal —
-   so the delays are keyed off the dial's own step number and mirror the
-   container stagger exactly. */
-.js-on .reveal .step-dial-1 { transition-delay: 0ms; }
-.js-on .reveal .step-dial-2 { transition-delay: calc(var(--reveal-step) * 1); }
-.js-on .reveal .step-dial-3 { transition-delay: calc(var(--reveal-step) * 2); }
-.js-on .reveal .step-dial-4 { transition-delay: calc(var(--reveal-step) * 3); }
+/* The dial's delay is mirrored from its step in JS, so it sweeps on the same
+   beat however the steps happen to batch at a given breakpoint. */
 .js-on .reveal-visible .step-dial { transform: none; }
 
 @media (prefers-reduced-motion: reduce) {

@@ -99,11 +99,23 @@
     });
   }
 
-  /* ===== SCROLL REVEAL — fade + translate only =====
-     Webflow equivalent: "Scroll into view" Page Trigger interaction. */
+  /* ===== SCROLL REVEAL — fade + translate, staggered by arrival =====
+     Webflow equivalent: "Scroll into view" Page Trigger, with the delay set per
+     child of a group.
+
+     The stagger is computed from what arrives TOGETHER, not from DOM index. An
+     index-based delay looks right on a short grid and wrong on a long one: the
+     16th portfolio tile sits 2000px down the page, arrives entirely on its own,
+     and would still sit waiting out a 360ms delay before moving. Cards that
+     land in the same frame cascade; a card scrolled to alone starts at once. */
   function initReveal() {
     var targets = document.querySelectorAll('.reveal');
     if (!targets.length) return;
+
+    // Single source of truth for the interval is the --reveal-step token.
+    var step = parseFloat(getComputedStyle(document.documentElement)
+      .getPropertyValue('--reveal-step')) || 70;
+    var maxSteps = 6;   // caps a big batch so a full grid never crawls
 
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced || !('IntersectionObserver' in window)) {
@@ -114,10 +126,28 @@
     }
 
     var observer = new IntersectionObserver(function (entries) {
+      var arriving = [];
       entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('reveal-visible');
-        observer.unobserve(entry.target);
+        if (entry.isIntersecting) arriving.push(entry);
+      });
+      if (!arriving.length) return;
+
+      // Top-to-bottom, then DOM order within a row (sort is stable).
+      arriving.sort(function (a, b) {
+        return a.boundingClientRect.top - b.boundingClientRect.top;
+      });
+
+      arriving.forEach(function (entry, i) {
+        var delay = Math.min(i, maxSteps) * step;
+        var el = entry.target;
+        el.style.transitionDelay = delay + 'ms';
+
+        // A process step's dial must sweep on the same beat as its step.
+        var dial = el.querySelector('.step-dial');
+        if (dial) dial.style.transitionDelay = delay + 'ms';
+
+        el.classList.add('reveal-visible');
+        observer.unobserve(el);
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
 

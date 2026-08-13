@@ -183,11 +183,13 @@ One system, extended from the existing tokens — no parallel motion stack.
 |---|---|---|
 | `--ease-out` | `cubic-bezier(0.23, 1, 0.32, 1)` | Strong ease-out. **Never `ease-in` on an entrance** — it delays the exact moment the eye is on the element |
 | `--reveal-dur` | `600ms` | Marketing tier, so longer than the 300ms UI ceiling is fine |
-| `--reveal-step` | `60ms` | Stagger interval, inside the 30–80ms band |
+| `--reveal-step` | `70ms` | Stagger interval, inside the 30–80ms band. Single source of truth — `initReveal()` reads it off the token |
 
 - `.reveal` — fade + `translateY(20px)`. Transform and opacity only; both skip layout and paint.
-- `.reveal-stagger` on a container — children step by `--reveal-step` via `nth-child`, **capped at the 7th** so 16 portfolio tiles finish in 360ms rather than a second.
-- **The process dials sweep a quarter turn** as each step arrives — rotating the disc drags its filled wedge, so the arc reads as being drawn. Delays are keyed off `.step-dial-1…4` to match the container stagger. This is the one piece of motion that *explains* something rather than softening an entrance.
+- **Stagger is computed from arrival, not DOM position.** `initReveal()` sorts each IntersectionObserver batch top-to-bottom and assigns incremental delays to *that batch only*, capped at 6 steps. Cards landing in the same frame cascade; a card scrolled to on its own starts immediately.
+
+  The earlier `nth-child` version looked right on a short grid and wrong on a long one — the 16th portfolio tile sat 2,000px down, arrived alone, and still waited out a fixed 360ms before moving. That reads as lag, not stagger. There is no `.reveal-stagger` class any more; grouping is implicit.
+- **The process dials sweep a quarter turn** as each step arrives — rotating the disc drags its filled wedge, so the arc reads as being drawn. The dial's delay is mirrored from its step in JS, so it stays on the same beat however the steps batch at a given breakpoint. This is the one piece of motion that *explains* something rather than softening an entrance.
 
 **Deliberately not animated:** the portfolio filter (clicked repeatedly — it snaps, and tiles keep `reveal-visible` so re-showing never re-animates), nav, and footer.
 
