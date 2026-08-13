@@ -235,6 +235,15 @@ The site is public but deliberately unsearchable, matching `carine-website` and 
 
 Note that a public repo is itself visible on GitHub regardless of these — noindex governs the deployed site, not the source. Move the repo back to private if the source needs to stay unseen.
 
+## Deployed
+
+**https://mingkey88.github.io/amigos360-website/** — GitHub Pages, `main` branch, root path.
+
+Two things to know when sharing it:
+
+- **Assets are cached for 10 minutes** (`Cache-Control: max-age=600`). After a push, the HTML updates quickly but CSS and JS can lag. If a change looks missing, hard-refresh (`Cmd+Shift+R`) or wait ten minutes — don't go hunting for a bug that isn't there.
+- **`robots.txt` does nothing on a project Pages site.** Crawlers only read it from the host root — `mingkey88.github.io/robots.txt` — never from `/amigos360-website/robots.txt`. The `noindex, nofollow` meta on all six pages is what actually keeps this out of search results. Keep it on every new page. The same applies to `carine-website` and `tienyan-website`.
+
 ## Local preview
 
 Opening `index.html` in a browser is enough. A server is only needed for tooling that blocks `file://`:
