@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en-SG">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pricing — Amigos360</title>
+  <meta name="description" content="Basic, Pro and Premium design subscription plans from Amigos360.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="assets/amigos360-owl-cerulean.svg" type="image/svg+xml">
+
+  <!-- Scroll-reveal only hides content once JS is confirmed running.
+       Webflow does the same thing with its w-mod-js class. -->
+  <script>document.documentElement.className += " js-on";</script>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ===== NAVBAR (shared component — identical markup on every page) ===== -->
+  <header class="navbar">
+    <div class="container">
+      <div class="navbar-inner">
+        <a class="navbar-brand" href="index.html" aria-label="Amigos360 home">
+          <img class="navbar-logo" src="assets/amigos360-full-logo-deep-slate.svg" alt="Amigos360">
+        </a>
+
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+
+        <nav class="nav-menu" id="nav-menu" aria-label="Main">
+          <a class="nav-link" href="portfolio.html">Portfolio</a>
+          <a class="nav-link nav-link-current" aria-current="page" href="pricing.html">Pricing</a>
+          <a class="nav-link" href="faq.html">FAQ</a>
+          <span class="nav-divider" aria-hidden="true"></span>
+          <a class="nav-link" href="sign-in.html">Sign in</a>
+          <a class="btn btn-primary nav-cta" href="book-a-call.html">Book a Discovery Call</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section-page-head">
+      <div class="container">
+        <p class="eyebrow"><span class="eyebrow-marker" aria-hidden="true"></span>Pricing</p>
+        <h1 class="page-heading">Simple plans. Serious design.</h1>
+        <p class="page-intro">TODO: confirm page intro copy with the client. Prices below are placeholders.</p>
+      </div>
+    </section>
+
+    <!-- ===== PLAN COMPARISON =====
+         TODO: prices are S$X,XXX placeholders and the tier distribution below
+         is a sensible guess — both need client confirmation before launch. -->
+    <section class="section-pricing">
+      <div class="container">
+        <div class="pricing-table" role="table" aria-label="Plan comparison">
+        <div class="pricing-cell pricing-corner" role="columnheader"><span class="visually-hidden">Feature</span></div>
+        <div class="plan-head" role="columnheader">
+          <span class="plan-tag-slot"></span>
+          <span class="plan-name">Basic</span>
+          <span class="plan-price">S$X,XXX</span>
+          <span class="plan-note">per month</span>
+        </div>
+        <div class="plan-head plan-head-featured" role="columnheader">
+          <span class="plan-tag-slot"><span class="plan-tag">Most popular</span></span>
+          <span class="plan-name">Pro</span>
+          <span class="plan-price">S$X,XXX</span>
+          <span class="plan-note">per month</span>
+        </div>
+        <div class="plan-head" role="columnheader">
+          <span class="plan-tag-slot"></span>
+          <span class="plan-name">Premium</span>
+          <span class="plan-price">S$X,XXX</span>
+          <span class="plan-note">per month</span>
+        </div>
+        <div class="group-title" role="rowgroup">Design services</div>
+        <div class="feature-name" role="rowheader">Digital Ads &amp; Social Media</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">Print, Packaging &amp; Merch</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">Branding</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">Email Design</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">Illustration Design</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">Web Design</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">Presentation Design</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">Motion Graphics</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">Videos</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="group-title" role="rowgroup">Features</div>
+        <div class="feature-name" role="rowheader">1 Active Request in Progress</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">Same Day Turnaround*</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">Designated Designer &amp; Account Manager</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">Real-time Collaboration</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">Canva File Delivery</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">Figma File Delivery</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        <div class="feature-name" role="rowheader">AI Generated Briefs and Copies</div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-no" role="img" aria-label="Not included in Basic"></span></div>
+        <div class="tier-cell tier-cell-featured" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Pro"></span></div>
+        <div class="tier-cell" role="cell"><span class="tier-mark tier-yes" role="img" aria-label="Included in Premium"></span></div>
+        </div>
+
+        <!-- Mobile equivalent of the table above; one is always display:none -->
+        <div class="plan-cards">
+        <article class="plan-card">
+          <div class="plan-card-head">
+            <h2 class="plan-name">Basic</h2>
+            <span class="plan-price">S$X,XXX</span>
+            <span class="plan-note">per month</span>
+          </div>
+          <div class="plan-card-body">
+            <p class="plan-card-group">Design services</p>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Digital Ads &amp; Social Media</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Print, Packaging &amp; Merch</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Branding</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Email Design</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Illustration Design</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Web Design</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Presentation Design</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Motion Graphics</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Videos</div>
+            <p class="plan-card-group">Features</p>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>1 Active Request in Progress</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Same Day Turnaround*</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Designated Designer &amp; Account Manager</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Real-time Collaboration</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Canva File Delivery</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Figma File Delivery</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>AI Generated Briefs and Copies</div>
+          </div>
+          <div class="plan-card-cta">
+            <a class="btn btn-primary btn-full" href="book-a-call.html">Book a Discovery Call</a>
+          </div>
+        </article>
+        <article class="plan-card">
+          <div class="plan-card-head">
+            <h2 class="plan-name">Pro</h2>
+            <span class="plan-tag">Most popular</span>
+            <span class="plan-price">S$X,XXX</span>
+            <span class="plan-note">per month</span>
+          </div>
+          <div class="plan-card-body">
+            <p class="plan-card-group">Design services</p>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Digital Ads &amp; Social Media</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Print, Packaging &amp; Merch</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Branding</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Email Design</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Illustration Design</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Web Design</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Presentation Design</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Motion Graphics</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Videos</div>
+            <p class="plan-card-group">Features</p>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>1 Active Request in Progress</div>
+            <div class="plan-card-item plan-card-item-off"><span class="tier-mark tier-no" role="img" aria-label="Not included"></span>Same Day Turnaround*</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Designated Designer &amp; Account Manager</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Real-time Collaboration</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Canva File Delivery</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Figma File Delivery</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>AI Generated Briefs and Copies</div>
+          </div>
+          <div class="plan-card-cta">
+            <a class="btn btn-primary btn-full" href="book-a-call.html">Book a Discovery Call</a>
+          </div>
+        </article>
+        <article class="plan-card">
+          <div class="plan-card-head">
+            <h2 class="plan-name">Premium</h2>
+            <span class="plan-price">S$X,XXX</span>
+            <span class="plan-note">per month</span>
+          </div>
+          <div class="plan-card-body">
+            <p class="plan-card-group">Design services</p>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Digital Ads &amp; Social Media</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Print, Packaging &amp; Merch</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Branding</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Email Design</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Illustration Design</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Web Design</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Presentation Design</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Motion Graphics</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Videos</div>
+            <p class="plan-card-group">Features</p>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>1 Active Request in Progress</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Same Day Turnaround*</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Designated Designer &amp; Account Manager</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Real-time Collaboration</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Canva File Delivery</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>Figma File Delivery</div>
+            <div class="plan-card-item"><span class="tier-mark tier-yes" role="img" aria-label="Included"></span>AI Generated Briefs and Copies</div>
+          </div>
+          <div class="plan-card-cta">
+            <a class="btn btn-primary btn-full" href="book-a-call.html">Book a Discovery Call</a>
+          </div>
+        </article>
+        </div>
+
+        <p class="filter-status">* TODO: same-day turnaround footnote copy required.</p>
+      </div>
+    </section>
+
+<!-- ===== CTA BAND (shared component — reused on pricing, portfolio, faq) ===== -->
+    <section class="section-cta">
+      <div class="container">
+        <div class="cta-inner">
+          <div class="cta-content">
+            <!-- TODO: eyebrow copy needs client sign-off. Reuses the footer
+                 column title wording so the vocabulary stays consistent. -->
+            <p class="eyebrow eyebrow-light"><span class="eyebrow-marker eyebrow-marker-blush" aria-hidden="true"></span>Get started</p>
+            <h2 class="cta-heading text-light">See if Amigos is the right fit.</h2>
+            <p class="cta-sub">Book a no-obligation discovery call to see how a design subscription can support your business.</p>
+            <div class="cta-actions">
+              <a class="btn btn-paper" href="book-a-call.html">Schedule a call</a>
+            </div>
+          </div>
+
+          <div class="cta-figure">
+            <div class="cta-dial" aria-hidden="true"></div>
+            <div class="cta-photo photo photo-duo-blush photo-circle">
+              <img class="photo-img" src="assets/photo-placeholder-square.jpg"
+                   alt="Placeholder for Amigos studio photography" loading="lazy" width="1200" height="1200">
+              <span class="photo-tint" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER (shared component — identical markup on every page) ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img class="footer-logo" src="assets/amigos360-full-logo-reverse-white.svg" alt="Amigos360">
+          <!-- TODO: optional one-line footer blurb — use .footer-blurb. Client copy required. -->
+        </div>
+
+        <div class="footer-col">
+          <h2 class="footer-col-title">Sitemap</h2>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="index.html">Home</a></li>
+            <li><a class="footer-link" href="portfolio.html">Portfolio</a></li>
+            <li><a class="footer-link" href="pricing.html">Pricing</a></li>
+            <li><a class="footer-link" href="faq.html">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h2 class="footer-col-title">Get started</h2>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="book-a-call.html">Book a Discovery Call</a></li>
+            <li><a class="footer-link" href="sign-in.html">Sign in</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-base">
+        <p class="footer-copy">© 2026 Amigos360</p>
+        <!-- TODO: legal pages not in scope — links point nowhere until pages exist. -->
+        <div class="footer-legal">
+          <a class="footer-link" href="#">Privacy</a>
+          <a class="footer-link" href="#">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

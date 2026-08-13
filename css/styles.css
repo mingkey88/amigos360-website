@@ -1,0 +1,1442 @@
+/* =========================================================================
+   AMIGOS360 — styles.css
+   Bauhaus-derived design system. Vanilla CSS, desktop-first.
+   Breakpoints match Webflow defaults: 1280 / 992 / 768 / 480.
+   Style via classes only. Max 2 levels of descendant selectors.
+   ========================================================================= */
+
+/* ===== TOKENS ===== */
+:root {
+  /* Brand colour — sampled from the supplied logo SVGs, not approximated */
+  --cerulean:    #009ACF;   /* logo .cls-1 / .cls-7 */
+  --deep-slate:  #1C355E;   /* logo .cls-2 / .cls-3 */
+  --blush:       #F7929E;   /* logo .cls-6 */
+  --ink:         #231F20;   /* logo .cls-5 — body text + hard print shadow */
+  --grey:        #606161;   /* logo .cls-1 (colour variant) — muted text, 5.7:1 on paper */
+  --paper:       #F7F5F0;   /* off-white ground */
+  --white:       #FFFFFF;
+
+  /* Tints used only as flat fills, never behind text */
+  --cerulean-wash: #E5F4FA;
+  --blush-wash:    #FDEBED;
+
+  /* Type */
+  --font-display: "Jost", "Century Gothic", "Futura", sans-serif;
+  /* IBM Plex Sans, not Inter. Plex Sans and Plex Mono are one superfamily drawn
+     together, so the body text and the micro-labels share skeletons — the same
+     pairing the Halden Miller reference uses. It is also a closer stand-in for
+     the real brand face (Helvetica Now Text) than Inter, which reads as generic
+     product-UI and turns up on every third site. */
+  --font-body:    "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  /* Utility face for every micro-label: eyebrows, placeholder captions, footer
+     column titles. Borrowed from the Halden Miller reference, which sets all its
+     small labels in IBM Plex Mono. A technical/stencil annotation face is also
+     period-correct for Bauhaus, so it costs the direction nothing. */
+  --font-mono:    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --fs-h1:      clamp(3rem, 7vw, 6rem);
+  --fs-h2:      clamp(2.125rem, 4.2vw, 3rem);
+  --fs-h3:      clamp(1.25rem, 1.8vw, 1.5rem);
+  --fs-body:    1.125rem;
+  --fs-body-sm: 1rem;
+  --fs-label:   0.8125rem;
+  --fs-numeral: clamp(4rem, 8vw, 7.5rem);
+
+  --lh-tight: 0.94;
+  --lh-snug:  1.12;
+  --lh-body:  1.6;
+
+  /* Spacing */
+  --s-xs:  8px;
+  --s-sm:  16px;
+  --s-md:  24px;
+  --s-lg:  40px;
+  --s-xl:  64px;
+  --s-2xl: 96px;
+  --s-3xl: 128px;
+
+  --section-py: clamp(64px, 9vw, 128px);
+  --container-max: 1280px;
+  --container-pad: clamp(20px, 5vw, 40px);
+
+  /* Structure — Bauhaus keeps its construction visible */
+  --rule: 1px solid rgba(35, 31, 32, 0.16);
+  --rule-strong: 2px solid var(--ink);
+  --border-w: 2px;
+  --print-shadow: 4px 4px 0 var(--ink);
+  --print-shadow-sm: 3px 3px 0 var(--ink);
+
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* ===== RESET & BASE ===== */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; height: auto; display: block; border: 0; }
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+p { margin: 0; }
+
+ul { margin: 0; padding: 0; list-style: none; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+/* Visible focus on every interactive element — Bauhaus-appropriate hard ring */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--cerulean);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  padding: 12px 20px;
+  background-color: var(--deep-slate);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+.skip-link:focus { left: 0; }
+
+/* ===== LAYOUT ===== */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding-inline: var(--container-pad);
+}
+
+/* ===== TYPOGRAPHY UTILITIES ===== */
+/* Section eyebrow. Mono label + a square marker — the reference uses a rounded
+   pill here, which would fight this system's zero-radius rule, so the chip
+   becomes a geometric primitive instead. */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-bottom: var(--s-md);
+}
+
+.eyebrow-marker {
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  background-color: var(--cerulean);
+}
+
+.eyebrow-light { color: rgba(255, 255, 255, 0.78); }
+.eyebrow-marker-blush { background-color: var(--blush); }
+
+.section-heading {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-snug);
+  max-width: 20ch;
+}
+
+.section-heading-wide { max-width: 26ch; }
+
+.section-intro {
+  font-size: var(--fs-body);
+  color: var(--grey);
+  max-width: 54ch;
+  margin-top: var(--s-md);
+}
+
+.text-light { color: var(--white); }
+
+/* ===== BUTTONS =====
+   Cerulean + white measures 3.22:1, which clears WCAG AA for LARGE text only.
+   Every cerulean button is therefore locked to 700 weight at 19px minimum,
+   plus a hard ink border that carries the edge. Never shrink these below 19px. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-xs);
+  padding: 16px 28px;
+  border: var(--border-w) solid var(--ink);
+  border-radius: 0;
+  font-family: var(--font-display);
+  font-size: 1.1875rem;   /* 19px — AA large-text threshold at 700 */
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-align: center;
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease),
+              background-color 0.18s var(--ease);
+}
+
+.btn-primary {
+  background-color: var(--cerulean);
+  color: var(--white);
+  box-shadow: var(--print-shadow);
+}
+.btn-primary:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+.btn-primary:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+
+.btn-slate {
+  background-color: var(--deep-slate);
+  color: var(--white);
+  box-shadow: var(--print-shadow);
+}
+.btn-slate:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+.btn-slate:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+
+.btn-paper {
+  background-color: var(--paper);
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--blush);
+}
+.btn-paper:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--blush); }
+.btn-paper:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--blush); }
+
+.btn-full { width: 100%; }
+
+/* ===== NAVBAR ===== */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--paper);
+  border-bottom: var(--rule-strong);
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-lg);
+  min-height: 88px;
+  padding-block: 14px;
+}
+
+.navbar-brand { display: block; flex-shrink: 0; }
+
+.navbar-logo { width: 190px; height: auto; }
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--s-lg);
+}
+
+.nav-link {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--deep-slate);
+  padding-block: 6px;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.18s var(--ease);
+}
+.nav-link:hover { border-bottom-color: var(--cerulean); }
+
+.nav-link-current { border-bottom-color: var(--cerulean); }
+
+.nav-divider {
+  width: 1px;
+  height: 26px;
+  background-color: rgba(35, 31, 32, 0.22);
+}
+
+.nav-cta { padding: 13px 22px; }
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 48px;
+  height: 48px;
+  padding: 0 10px;
+  border: var(--border-w) solid var(--ink);
+  background-color: var(--white);
+}
+
+.nav-toggle-bar {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: var(--ink);
+  transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background-color: var(--deep-slate);
+  color: var(--white);
+  padding-top: var(--s-2xl);
+  padding-bottom: var(--s-lg);
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: var(--s-xl);
+  padding-bottom: var(--s-xl);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.footer-logo { width: 220px; margin-bottom: var(--s-md); }
+
+.footer-blurb {
+  font-size: var(--fs-body-sm);
+  color: rgba(255, 255, 255, 0.72);
+  max-width: 34ch;
+}
+
+.footer-col-title {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--blush);
+  margin-bottom: var(--s-md);
+}
+
+.footer-list { display: flex; flex-direction: column; gap: 12px; }
+
+.footer-link {
+  font-size: var(--fs-body-sm);
+  color: rgba(255, 255, 255, 0.86);
+  border-bottom: 1px solid transparent;
+  align-self: flex-start;
+  padding-block: 4px;   /* lifts the hit area to 29px — WCAG 2.5.8 wants 24px+ */
+}
+.footer-link:hover { border-bottom-color: var(--blush); color: var(--white); }
+
+.footer-base {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-md);
+  padding-top: var(--s-lg);
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.footer-legal { display: flex; gap: var(--s-md); }
+
+/* ===== CTA BAND (shared component) ===== */
+.section-cta {
+  background-color: var(--deep-slate);
+  color: var(--white);
+  padding-block: var(--section-py);
+  overflow: hidden;
+}
+
+.cta-inner {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  align-items: center;
+  gap: var(--s-2xl);
+  position: relative;
+}
+
+.cta-heading {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-snug);
+  max-width: 16ch;
+}
+
+.cta-sub {
+  margin-top: var(--s-md);
+  font-size: var(--fs-body);
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 46ch;
+}
+
+.cta-actions { margin-top: var(--s-lg); }
+
+/* The 360 motif again — a full dial, closing the loop the page opened with.
+   Deliberately no owl here: it collided with the dial's white quadrant, and the
+   dial alone is the stronger closing mark. */
+/* justify-self, not margin-left:auto — auto margins cancel a grid item's
+   stretch, which collapsed this box to 0x0 and took the dial with it. */
+.cta-figure {
+  position: relative;
+  justify-self: end;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 1;
+}
+
+.cta-dial {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: var(--border-w) solid var(--white);
+  background-image: conic-gradient(
+    var(--cerulean) 0deg 90deg,
+    var(--blush) 90deg 180deg,
+    transparent 180deg 270deg,
+    var(--white) 270deg 360deg
+  );
+}
+
+/* Photographic counterpart, offset behind the flat dial — the same montage
+   pairing as the hero, reversed so the page closes on the photo, not the shape. */
+.cta-photo {
+  position: absolute;
+  left: -22%;
+  bottom: -10%;
+  width: 62%;
+  aspect-ratio: 1;
+  border: var(--border-w) solid var(--white);
+  z-index: 2;
+}
+
+/* ===== PHOTOMONTAGE =====
+   Bauhaus/Constructivist duotone: a grayscale plate printed in two inks, cut
+   into a geometric shape and overlapped with flat colour. Three stacked layers:
+
+     1. container background = the SHADOW ink
+     2. the grayscale image, mix-blend-mode: screen → shadows take the container ink
+     3. .photo-tint overlay,  mix-blend-mode: multiply → highlights take the second ink
+
+   Webflow rebuild: Effects panel → Filter (grayscale) on the image, Blending on
+   both the image and the tint div. No custom code needed. */
+.photo {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--deep-slate);
+  isolation: isolate;          /* keeps the blend from reaching the page behind */
+}
+
+.photo-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.12);
+  mix-blend-mode: screen;
+}
+
+.photo-tint {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* Ink pairs. Container = shadow ink, .photo-tint = highlight ink.
+   Final shadows land on shadow x highlight, final highlights on the highlight
+   ink alone — so the HIGHLIGHT ink must be light or the image goes muddy.
+   Cerulean is a mid-tone and caps brightness, so it is only ever a shadow ink. */
+.photo-duo-cerulean { background-color: var(--cerulean); }
+.photo-duo-cerulean .photo-tint { background-color: var(--paper); }
+
+.photo-duo-blush { background-color: var(--deep-slate); }
+.photo-duo-blush .photo-tint { background-color: var(--blush); }
+
+.photo-duo-slate { background-color: var(--ink); }
+.photo-duo-slate .photo-tint { background-color: var(--cerulean-wash); }
+
+/* Straight grayscale, no second ink — for the client logo wall */
+.photo-mono .photo-img { mix-blend-mode: normal; }
+.photo-mono .photo-tint { display: none; }
+
+/* Geometric cuts. The shape is the montage. */
+.photo-circle  { border-radius: 50%; aspect-ratio: 1; }
+.photo-arch    { border-radius: 999px 999px 0 0; }
+.photo-quarter { border-radius: 100% 0 0 0; }
+.photo-square  { border-radius: 0; }
+
+.photo-caption {
+  position: absolute;
+  left: var(--s-md);
+  bottom: var(--s-md);
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+/* ===== PLACEHOLDER MEDIA (reusable) ===== */
+.placeholder-media {
+  display: flex;
+  align-items: flex-end;
+  padding: var(--s-md);
+  border: var(--border-w) solid var(--ink);
+  background-color: var(--cerulean-wash);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.placeholder-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.placeholder-1x1  { aspect-ratio: 1 / 1; }
+.placeholder-4x5  { aspect-ratio: 4 / 5; }
+.placeholder-16x9 { aspect-ratio: 16 / 9; }
+
+/* Ink, not white. White on cerulean is 3.22:1 — fine for a 24px+ bold service
+   label, but these captions are 13px, which needs 4.5:1. Ink gives 5.07:1. */
+.placeholder-cerulean { background-color: var(--cerulean); color: var(--ink); }
+.placeholder-slate    { background-color: var(--deep-slate); color: var(--white); }
+.placeholder-blush    { background-color: var(--blush); color: var(--ink); }
+.placeholder-paper    { background-color: var(--paper); color: var(--ink); }
+.placeholder-white    { background-color: var(--white); color: var(--ink); }
+
+/* ===== HERO ===== */
+.section-hero {
+  padding-block: clamp(56px, 7vw, 104px) clamp(64px, 9vw, 120px);
+  border-bottom: var(--rule-strong);
+  overflow: hidden;
+}
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 7fr 5fr;   /* asymmetric: type block ~58% */
+  align-items: center;
+  gap: var(--s-2xl);
+}
+
+.hero-heading {
+  font-size: var(--fs-h1);
+  font-weight: 800;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.035em;
+  max-width: 14ch;
+}
+
+.hero-rule {
+  width: 96px;
+  height: 6px;
+  background-color: var(--blush);
+  margin-block: var(--s-lg) var(--s-md);
+}
+
+.hero-sub {
+  font-size: clamp(1.125rem, 1.5vw, 1.3125rem);
+  color: var(--grey);
+  max-width: 46ch;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-md);
+  margin-top: var(--s-xl);
+}
+
+/* Hero composition — the signature 360 dial */
+.hero-figure {
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+}
+
+/* Width + aspect-ratio, never four unequal insets — insets made this an ellipse. */
+.hero-dial {
+  position: absolute;
+  top: 4%;
+  left: 4%;
+  width: 82%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: var(--border-w) solid var(--ink);
+  background-image: conic-gradient(
+    var(--cerulean)   0deg  90deg,
+    var(--deep-slate) 90deg 180deg,
+    var(--blush)      180deg 270deg,
+    var(--paper)      270deg 360deg
+  );
+}
+
+/* The montage element: a duotone photo cut to an arch, overlapping the dial.
+   Arch, circle, triangle — three primitives, one of them photographic. */
+.hero-photo {
+  position: absolute;
+  left: -6%;
+  bottom: -4%;
+  width: 42%;
+  aspect-ratio: 3 / 4;
+  border: var(--border-w) solid var(--ink);
+  z-index: 2;
+}
+
+.hero-triangle {
+  position: absolute;
+  right: 12%;
+  top: 4%;
+  width: 0;
+  height: 0;
+  border-left: 46px solid transparent;
+  border-right: 46px solid transparent;
+  border-bottom: 80px solid var(--deep-slate);
+}
+
+/* Owl at low emphasis, bleeding off the hero's right edge (clipped by
+   .section-hero overflow). Flat pale tint rather than opacity — Bauhaus
+   colour blocking stays honest, and it never competes with the dial. */
+.hero-owl {
+  position: absolute;
+  right: -26%;
+  bottom: -6%;
+  width: 76%;
+}
+
+/* ===== SOCIAL PROOF ===== */
+.section-proof {
+  padding-block: var(--section-py);
+  border-bottom: var(--rule-strong);
+}
+
+.proof-head { margin-bottom: var(--s-xl); }
+
+/* The grid is the graphic: hairline rules do the work, no boxes */
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-top: var(--rule);
+  border-left: var(--rule);
+}
+
+.proof-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 128px;
+  padding: var(--s-md);
+  border-right: var(--rule);
+  border-bottom: var(--rule);
+}
+
+.proof-slot {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grey);
+  opacity: 0.75;
+}
+
+/* ===== SERVICES ===== */
+.section-services {
+  padding-block: var(--section-py);
+  border-bottom: var(--rule-strong);
+}
+
+.services-head { margin-bottom: var(--s-xl); }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--s-md);
+}
+
+.service-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--s-2xl);
+  min-height: 232px;
+  padding: var(--s-md);
+  border: var(--border-w) solid var(--ink);
+  background-color: var(--white);
+}
+
+.service-tile-cerulean { background-color: var(--cerulean); color: var(--white); }
+.service-tile-slate    { background-color: var(--deep-slate); color: var(--white); }
+.service-tile-blush    { background-color: var(--blush); color: var(--ink); }
+
+.service-label {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+}
+
+/* Geometric icons — pure CSS primitives, one per service */
+.service-icon {
+  width: 46px;
+  height: 46px;
+  background-color: var(--ink);
+}
+.service-icon-circle    { border-radius: 50%; }
+.service-icon-diamond   { transform: rotate(45deg); width: 36px; height: 36px; margin: 5px; }
+.service-icon-wide      { height: 30px; margin-block: 8px; }
+.service-icon-tall      { width: 32px; }
+.service-icon-triangle  {
+  width: 0; height: 0; background-color: transparent;
+  border-left: 25px solid transparent;
+  border-right: 25px solid transparent;
+  border-bottom: 44px solid var(--ink);
+}
+.service-icon-semi      { height: 24px; border-radius: 46px 46px 0 0; margin-top: 22px; }
+.service-icon-quarter   { border-radius: 100% 0 0 0; }
+.service-icon-dots      {
+  background-color: transparent;
+  background-image: radial-gradient(var(--ink) 42%, transparent 44%);
+  background-size: 15.33px 15.33px;
+}
+
+/* Icon colour follows tile contrast */
+.service-tile-cerulean .service-icon,
+.service-tile-slate .service-icon { background-color: var(--white); }
+.service-tile-cerulean .service-icon-triangle,
+.service-tile-slate .service-icon-triangle {
+  background-color: transparent;
+  border-bottom-color: var(--white);
+}
+.service-tile-cerulean .service-icon-dots,
+.service-tile-slate .service-icon-dots {
+  background-color: transparent;
+  background-image: radial-gradient(var(--white) 42%, transparent 44%);
+}
+
+/* ===== PROCESS =====
+   Four steps, each closing another 90° of the dial. Step 4 completes 360°.
+   The numbering is load-bearing here: the plan really is a sequence. */
+.section-process {
+  padding-block: var(--section-py);
+  background-color: var(--white);
+  border-bottom: var(--rule-strong);
+}
+
+.process-head { margin-bottom: var(--s-xl); }
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-left: var(--rule-strong);
+  border-bottom: var(--rule-strong);   /* closes the box; open rules read as broken */
+}
+
+.process-step {
+  display: flex;
+  flex-direction: column;
+  padding: var(--s-lg) var(--s-md) var(--s-lg);
+  border-right: var(--rule-strong);
+  border-top: var(--rule-strong);
+}
+
+.step-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-sm);
+  margin-bottom: var(--s-lg);
+}
+
+.step-numeral {
+  font-family: var(--font-display);
+  font-size: var(--fs-numeral);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: var(--deep-slate);
+}
+
+.step-dial {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: var(--border-w) solid var(--ink);
+  background-color: var(--paper);
+}
+.step-dial-1 { background-image: conic-gradient(var(--cerulean) 0deg 90deg,  transparent 90deg 360deg); }
+.step-dial-2 { background-image: conic-gradient(var(--cerulean) 0deg 180deg, transparent 180deg 360deg); }
+.step-dial-3 { background-image: conic-gradient(var(--cerulean) 0deg 270deg, transparent 270deg 360deg); }
+.step-dial-4 { background-image: conic-gradient(var(--cerulean) 0deg 360deg); }
+
+.step-title {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  margin-bottom: var(--s-sm);
+}
+
+.step-body {
+  font-size: var(--fs-body-sm);
+  color: var(--grey);
+}
+
+/* ===== SCROLL REVEAL =====
+   Scoped to .js-on (set by an inline script in <head>, the same trick Webflow
+   uses with w-mod-js). Without it, a JS failure would hide the page's content
+   permanently instead of degrading to plain visible markup. */
+.js-on .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.js-on .reveal-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js-on .reveal { opacity: 1; transform: none; transition: none; }
+  .btn { transition: none; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* =========================================================================
+   RESPONSIVE — Webflow breakpoints
+   ========================================================================= */
+
+/* ----- 1280px ----- */
+@media screen and (max-width: 1280px) {
+  .nav-menu { gap: var(--s-md); }
+  .hero-inner { gap: var(--s-xl); }
+}
+
+/* ----- 992px (tablet) ----- */
+@media screen and (max-width: 992px) {
+  .nav-toggle { display: flex; }
+
+  .nav-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--s-md) var(--container-pad) var(--s-lg);
+    background-color: var(--paper);
+    border-bottom: var(--rule-strong);
+  }
+  .nav-menu-open { display: flex; }
+
+  .nav-link {
+    font-size: 1.25rem;
+    padding-block: 14px;
+    border-bottom: var(--rule);
+  }
+  .nav-divider { display: none; }
+  .nav-cta { margin-top: var(--s-md); }
+  .navbar-inner { position: relative; }
+  .navbar-logo { width: 164px; }
+
+  .hero-inner { grid-template-columns: 1fr; gap: var(--s-xl); }
+  .hero-figure { max-width: 440px; }
+  .hero-heading { max-width: 18ch; }
+  /* Pull the photo arch back in frame on a narrow canvas. */
+  .hero-photo { left: 0; width: 40%; }
+
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .process-grid { grid-template-columns: repeat(2, 1fr); }
+  .proof-grid { grid-template-columns: repeat(4, 1fr); }
+
+  .cta-inner { grid-template-columns: 1fr; gap: var(--s-xl); }
+  .cta-figure { margin-left: 0; max-width: 260px; }
+
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: var(--s-lg); }
+}
+
+/* ----- 768px (mobile landscape) ----- */
+@media screen and (max-width: 768px) {
+  :root { --fs-body: 1.0625rem; }
+
+  .proof-grid { grid-template-columns: repeat(2, 1fr); }
+  .proof-cell { min-height: 104px; }
+
+  .service-tile { min-height: 188px; gap: var(--s-xl); }
+
+  .step-topline { margin-bottom: var(--s-md); }
+  .step-dial { width: 52px; height: 52px; }
+
+  .footer-inner { grid-template-columns: 1fr; gap: var(--s-lg); }
+  .footer-base { flex-direction: column; align-items: flex-start; }
+}
+
+/* ----- 480px (mobile portrait) ----- */
+@media screen and (max-width: 480px) {
+  .navbar-inner { min-height: 72px; }
+  .navbar-logo { width: 142px; }
+
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .hero-triangle { border-left-width: 30px; border-right-width: 30px; border-bottom-width: 54px; }
+
+  .services-grid { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: 1fr; }
+
+  /* Single-column tiles at full height meant ~1700px of scroll for eight
+     labels. Same tile, laid out as a row — icon beside label. */
+  .service-tile {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--s-md);
+    min-height: 88px;
+  }
+
+  .btn { width: 100%; }
+  .nav-cta { width: 100%; }
+}
+
+/* =========================================================================
+   INNER PAGES
+   Base styles first, then their own responsive block at the end of the file —
+   appending after the homepage media queries would otherwise let base rules
+   override them.
+   ========================================================================= */
+
+/* ===== SHARED ===== */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.section-page-head {
+  padding-block: clamp(48px, 6vw, 88px) clamp(40px, 5vw, 64px);
+  border-bottom: var(--rule-strong);
+}
+
+.page-heading {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.03em;
+  max-width: 18ch;
+}
+
+.page-intro {
+  margin-top: var(--s-md);
+  font-size: var(--fs-body);
+  color: var(--grey);
+  max-width: 52ch;
+}
+
+/* ===== PORTFOLIO ===== */
+.section-portfolio { padding-block: var(--section-py); }
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-xs);
+  margin-bottom: var(--s-lg);
+}
+
+.filter-button {
+  padding: 10px 18px;
+  border: var(--border-w) solid var(--ink);
+  background-color: transparent;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background-color 0.16s var(--ease), color 0.16s var(--ease);
+}
+.filter-button:hover { background-color: var(--cerulean-wash); }
+
+.filter-button-active {
+  background-color: var(--deep-slate);
+  color: var(--white);
+}
+.filter-button-active:hover { background-color: var(--deep-slate); }
+
+.filter-status {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--grey);
+  margin-bottom: var(--s-md);
+}
+
+/* Mosaic: wide pieces take two columns, dense flow backfills the holes.
+   align-items:start keeps each tile's own aspect ratio instead of stretching. */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-flow: dense;
+  align-items: start;
+  gap: var(--s-md);
+}
+
+.portfolio-tile { border: var(--border-w) solid var(--ink); }
+.portfolio-tile-wide { grid-column: span 2; aspect-ratio: 16 / 9; }
+.portfolio-tile-tall { aspect-ratio: 4 / 5; }
+.portfolio-tile-square { aspect-ratio: 1 / 1; }
+
+/* ===== PRICING ===== */
+.section-pricing { padding-block: var(--section-py); }
+
+.pricing-table {
+  display: grid;
+  grid-template-columns: 2.1fr 1fr 1fr 1fr;
+  border-top: var(--rule-strong);
+  border-left: var(--rule-strong);
+  border-bottom: var(--rule-strong);
+}
+
+.pricing-cell {
+  padding: var(--s-md);
+  border-right: var(--rule-strong);
+  border-bottom: var(--rule);
+}
+
+.pricing-corner {
+  background-color: transparent;
+  border-bottom: var(--rule-strong);   /* match the plan-head row it sits beside */
+}
+
+/* Reserved in every column, filled only on the featured plan — without it the
+   tag pushes Pro's price 34px below the other two. */
+.plan-tag-slot {
+  display: flex;
+  align-items: flex-start;
+  min-height: 26px;   /* taller than the tag itself, so filled and empty slots match */
+}
+
+.plan-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-xs);
+  padding: var(--s-md);
+  border-right: var(--rule-strong);
+  border-bottom: var(--rule-strong);
+}
+
+.plan-head-featured { background-color: var(--cerulean-wash); }
+
+.plan-name {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+}
+
+.plan-tag {
+  align-self: flex-start;
+  line-height: 1.2;
+  padding: 4px 10px;
+  background-color: var(--blush);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.plan-price {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.plan-note {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.group-title {
+  grid-column: 1 / -1;
+  padding: var(--s-md);
+  border-right: var(--rule-strong);
+  border-bottom: var(--rule-strong);
+  background-color: var(--deep-slate);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.feature-name {
+  padding: var(--s-sm) var(--s-md);
+  border-right: var(--rule-strong);
+  border-bottom: var(--rule);
+  font-size: var(--fs-body-sm);
+}
+
+.tier-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--s-sm);
+  border-right: var(--rule-strong);
+  border-bottom: var(--rule);
+}
+
+.tier-cell-featured { background-color: var(--cerulean-wash); }
+
+/* Cerulean disc + white check as a background image — Webflow sets this in the
+   Background panel, so it rebuilds without custom code. */
+.tier-mark {
+  display: block;
+  width: 26px;
+  height: 26px;
+}
+
+.tier-yes {
+  border-radius: 50%;
+  background-color: var(--cerulean);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5.5 12.5l4.5 4.5L18.5 7.5' fill='none' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E");
+  background-size: 20px 20px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.tier-no {
+  height: 2px;
+  background-color: var(--grey);
+  opacity: 0.55;
+}
+
+/* Mobile equivalent of the table. Both exist in the markup; one is display:none
+   at any given width, which is how a Webflow build handles this too. */
+.plan-cards { display: none; }
+
+.plan-card {
+  border: var(--border-w) solid var(--ink);
+  background-color: var(--white);
+  box-shadow: var(--print-shadow);
+  margin-bottom: var(--s-lg);
+}
+
+.plan-card-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-xs);
+  padding: var(--s-md);
+  border-bottom: var(--rule-strong);
+}
+
+.plan-card-body { padding: var(--s-md); }
+
+.plan-card-group {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-block: var(--s-md) var(--s-xs);
+}
+
+.plan-card-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding-block: 8px;
+  font-size: var(--fs-body-sm);
+  border-bottom: var(--rule);
+}
+
+.plan-card-item-off { color: var(--grey); }
+
+.plan-card-cta { padding: 0 var(--s-md) var(--s-md); }
+
+/* ===== FAQ ===== */
+.section-faq { padding-block: var(--section-py); }
+
+.faq-list {
+  max-width: 60rem;
+  border-top: var(--rule-strong);
+}
+
+.faq-item { border-bottom: var(--rule-strong); }
+
+.faq-question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-md);
+  width: 100%;
+  padding: var(--s-md) 0;
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  color: var(--deep-slate);
+}
+.faq-question:hover { color: var(--cerulean); }
+
+/* Quarter-turn on open — the dial motif again, at the smallest scale */
+.faq-toggle {
+  position: relative;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border: var(--border-w) solid var(--ink);
+  border-radius: 50%;
+  transition: transform 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+.faq-toggle::before,
+.faq-toggle::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 12px; height: 2px;
+  background-color: var(--ink);
+  transform: translate(-50%, -50%);
+}
+.faq-toggle::after { transform: translate(-50%, -50%) rotate(90deg); }
+
+.faq-item-open .faq-toggle { transform: rotate(90deg); background-color: var(--blush); }
+
+.faq-answer {
+  padding-bottom: var(--s-md);
+  max-width: 68ch;
+  color: var(--grey);
+}
+
+/* ===== BOOK A CALL ===== */
+.section-booking { padding-block: var(--section-py); }
+
+.booking-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-2xl);
+  align-items: start;
+}
+
+.booking-lead {
+  font-size: var(--fs-body);
+  margin-bottom: var(--s-md);
+}
+
+.check-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-sm);
+  margin-bottom: var(--s-xl);
+}
+
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: var(--fs-body);
+}
+
+.check-mark {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--cerulean);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5.5 12.5l4.5 4.5L18.5 7.5' fill='none' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E");
+  background-size: 20px 20px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.reassure-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  margin-bottom: var(--s-xs);
+}
+
+.reassure-body { color: var(--grey); max-width: 50ch; }
+
+.form-card {
+  padding: var(--s-lg);
+  border: var(--border-w) solid var(--ink);
+  background-color: var(--white);
+  box-shadow: var(--print-shadow);
+}
+
+.form-title {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  margin-bottom: var(--s-md);
+}
+
+.form-field { margin-bottom: var(--s-md); }
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 13px 14px;
+  border: var(--border-w) solid var(--ink);
+  border-radius: 0;
+  background-color: var(--paper);
+  font-family: var(--font-body);
+  font-size: var(--fs-body-sm);
+  color: var(--ink);
+}
+.form-input:focus,
+.form-select:focus { background-color: var(--white); }
+
+.form-input-error { border-color: #C0392B; }
+
+.form-error {
+  margin-top: 6px;
+  font-size: 0.875rem;
+  color: #A5281B;
+}
+
+.form-success {
+  padding: var(--s-lg);
+  border: var(--border-w) solid var(--ink);
+  background-color: var(--cerulean-wash);
+  box-shadow: var(--print-shadow);
+}
+
+.form-success-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  margin-bottom: var(--s-xs);
+}
+
+.embed-slot {
+  margin-top: var(--s-lg);
+  padding: var(--s-lg);
+  border: var(--border-w) dashed var(--grey);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+/* ===== SIGN IN ===== */
+.section-signin {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 88px);
+  padding-block: var(--section-py);
+  overflow: hidden;
+}
+
+.signin-shape {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 460px;
+  aspect-ratio: 1;
+  transform: translate(-62%, -58%);
+  border-radius: 50%;
+  background-image: conic-gradient(
+    var(--cerulean-wash) 0deg 90deg,
+    var(--blush-wash) 90deg 180deg,
+    transparent 180deg 270deg,
+    var(--cerulean-wash) 270deg 360deg
+  );
+}
+
+.signin-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;   /* the flex centring applies to .container, not this */
+  padding: var(--s-lg);
+  border: var(--border-w) solid var(--ink);
+  background-color: var(--white);
+  box-shadow: var(--print-shadow);
+}
+
+.signin-logo { width: 168px; margin-bottom: var(--s-lg); }
+
+.signin-title {
+  font-size: var(--fs-h3);
+  font-weight: 700;
+  margin-bottom: var(--s-md);
+}
+
+.forgot-link {
+  display: inline-block;
+  margin-top: var(--s-md);
+  padding-block: 4px;
+  font-size: var(--fs-body-sm);
+  color: var(--deep-slate);
+  border-bottom: 1px solid var(--deep-slate);
+}
+.forgot-link:hover { color: var(--cerulean); border-bottom-color: var(--cerulean); }
+
+/* =========================================================================
+   INNER PAGES — RESPONSIVE
+   ========================================================================= */
+@media screen and (max-width: 992px) {
+  .portfolio-grid { grid-template-columns: repeat(3, 1fr); }
+  .booking-inner { grid-template-columns: 1fr; gap: var(--s-xl); }
+  .pricing-table { grid-template-columns: 1.6fr 1fr 1fr 1fr; }
+}
+
+@media screen and (max-width: 768px) {
+  .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* Table gives way to stacked plan cards */
+  .pricing-table { display: none; }
+  .plan-cards { display: block; }
+
+  .faq-question { font-size: 1.125rem; }
+  .form-card { padding: var(--s-md); }
+  .section-signin { min-height: auto; }
+  .signin-shape { width: 320px; }
+}
+
+@media screen and (max-width: 480px) {
+  .portfolio-grid { grid-template-columns: 1fr; }
+  .portfolio-tile-wide { grid-column: span 1; }
+  .filter-button { flex: 1 1 auto; }
+}
