@@ -175,6 +175,26 @@ Two deliberate behaviours that look like bugs in an automated audit:
 
 Known trade-off, not fixed: the sticky navbar is 88px tall, which is a noticeable share of a landscape phone's ~390px viewport height. A height-based media query would fix it but Webflow can't express one in the designer, so it is left alone for rebuild fidelity.
 
+### Scroll motion
+
+One system, extended from the existing tokens — no parallel motion stack.
+
+| Token | Value | Why |
+|---|---|---|
+| `--ease-out` | `cubic-bezier(0.23, 1, 0.32, 1)` | Strong ease-out. **Never `ease-in` on an entrance** — it delays the exact moment the eye is on the element |
+| `--reveal-dur` | `600ms` | Marketing tier, so longer than the 300ms UI ceiling is fine |
+| `--reveal-step` | `60ms` | Stagger interval, inside the 30–80ms band |
+
+- `.reveal` — fade + `translateY(20px)`. Transform and opacity only; both skip layout and paint.
+- `.reveal-stagger` on a container — children step by `--reveal-step` via `nth-child`, **capped at the 7th** so 16 portfolio tiles finish in 360ms rather than a second.
+- **The process dials sweep a quarter turn** as each step arrives — rotating the disc drags its filled wedge, so the arc reads as being drawn. Delays are keyed off `.step-dial-1…4` to match the container stagger. This is the one piece of motion that *explains* something rather than softening an entrance.
+
+**Deliberately not animated:** the portfolio filter (clicked repeatedly — it snaps, and tiles keep `reveal-visible` so re-showing never re-animates), nav, and footer.
+
+**Button hover lift is gated** behind `@media (hover: hover) and (pointer: fine)` — on touch, a tap fires `:hover` and leaves the button stuck in its lifted state. `:active` stays ungated as real press feedback.
+
+**Reduced motion removes reveals entirely** rather than softening them — a scroll reveal aids no comprehension, so the content is simply present. `transition-delay` is zeroed too; without that the stagger delays survive the duration override and staggered items still arrive late.
+
 ### JS → Webflow interaction mapping
 
 | `js/main.js` | Webflow equivalent |
