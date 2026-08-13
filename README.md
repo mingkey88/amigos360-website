@@ -116,7 +116,7 @@ Three stacked layers, no images pre-processed in Photoshop — swap the source f
 
 ### Fonts — action needed for the Webflow build
 
-The real brand fonts ship in `Downloads/Amigos360_Logo_FA/Fonts/`: **Mont** (Bold / ExtraLight / Heavy) for display and **Helvetica Now Text** (Regular / Medium / Bold) for body.
+The real brand fonts ship in the supplied logo package, under `Amigos360_Logo_FA/Fonts/`: **Mont** (Bold / ExtraLight / Heavy) for display and **Helvetica Now Text** (Regular / Medium / Bold) for body.
 
 They are **not** bundled here — two Mont weights are `_DEMO` files and Helvetica Now is commercially licensed. This mockup uses the closest free stand-ins from Google Fonts:
 
@@ -221,6 +221,18 @@ Navbar uses the deep-slate full logo on paper; footer uses reverse-white on deep
 > All supplied copy is used **verbatim**. Nothing in the marketing copy was invented, shortened, or reworded. Placeholder strings are limited to functional labels (`Client logo 01`, `S$X,XXX/mo`) and are listed above.
 
 ---
+
+## Pre-launch: not indexable
+
+The site is public but deliberately unsearchable, matching `carine-website` and `tienyan-website`:
+
+- `<meta name="robots" content="noindex, nofollow">` in the head of **all six pages**
+- `robots.txt` with `Disallow: /`
+- `.nojekyll` so GitHub Pages serves the files as-is
+
+**At sign-off, reverse all three:** delete the robots meta from every page, change `robots.txt` to `Allow: /`, and drop this section.
+
+Note that a public repo is itself visible on GitHub regardless of these — noindex governs the deployed site, not the source. Move the repo back to private if the source needs to stay unseen.
 
 ## Local preview
 

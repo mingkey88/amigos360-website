@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /
+
+# Pre-launch. The Amigos360 site is not yet live.
+# At sign-off: replace with "Allow: /" and remove the noindex meta from all 6 pages.
