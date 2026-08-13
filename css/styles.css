@@ -74,6 +74,12 @@
 *::before,
 *::after { box-sizing: border-box; }
 
+/* The UA stylesheet's [hidden] { display: none } is a *user-agent* rule, so ANY
+   author rule that sets display beats it. .placeholder-media sets display:flex,
+   which silently defeated the portfolio filter — filtered-out tiles stayed on
+   screen. Enforce it once here so hiding works on every element. */
+[hidden] { display: none !important; }
+
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {

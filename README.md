@@ -145,6 +145,7 @@ Inter was the original stand-in and was replaced deliberately: it reads as gener
 - **Structure** is `section.section-[name] > .container > content` everywhere. Container is `max-width: 1280px` with `padding-inline: clamp(20px, 5vw, 40px)`.
 - **Class naming** is Client-First-inspired: lowercase, hyphenated, purpose-named. Every styled element has its own class. No IDs are used for styling (`id` appears only for the skip link and `aria-controls`). No selector goes deeper than two levels.
 - **Breakpoints** are desktop-first `max-width` queries at **1280 / 992 / 768 / 480**, matching Webflow's cascade direction exactly — build at desktop, then step down.
+- **`[hidden]` is enforced in the reset** with `display: none !important`. The UA stylesheet's `[hidden]` rule loses to *any* author rule that sets `display` — `.placeholder-media` sets `display: flex`, which silently defeated the portfolio filter. If you rebuild the filter as a Webflow interaction, hide by class rather than relying on the attribute.
 - **`.js-on`** is added to `<html>` by an inline script in `<head>`, mirroring Webflow's own `w-mod-js`. Scroll-reveal styles are scoped to it so a JS failure degrades to plain visible content instead of a blank page. Keep this if you hand-build the reveals.
 
 ### Responsive strategy
