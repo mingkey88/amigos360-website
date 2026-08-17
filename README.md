@@ -75,11 +75,30 @@ All already enforced in `styles.css`; breaking them will break WCAG AA.
 
 Measured in the browser across all six pages after the flip: **zero elements below their AA threshold.**
 
+### Light islands
+
+**Two blocks invert against the dark page: the navbar and the CTA band.** They bracket every page — light bar, dark body, light band, dark footer.
+
+The navbar is light for a specific reason, not a stylistic one. The full-colour lockup's white shapes are **knockouts**, so it can only ever sit on a light ground; and §1.4 asks for the primary colour version wherever possible. Without a light bar, the colour lockup would appear nowhere on the site except the favicon. The band gives it somewhere legitimate to live.
+
+Anything structural inside a light island has to use the `-on-light` tokens, or it draws white on white:
+
+| Dark page | Light island |
+|---|---|
+| `--fg` | `--on-light` |
+| `--rule` | `--rule-on-light` |
+| `--rule-strong` | `--rule-strong-on-light` |
+| `--print-shadow` | `4px 4px 0 var(--on-light)` |
+
+The cerulean CTA button is the exception that needs no change: its cerulean fill and white label are 3.22:1 *regardless of ground*, so the 19px/700 lock covers it in both places. Only its border and print shadow are overridden.
+
+The navbar is `position: sticky`, so it floats as a light strip over dark content while scrolling — which makes its 2px bottom border load-bearing rather than decorative.
+
 ### What the flip broke, and what it did not
 
 Three things did not invert mechanically and were handled deliberately:
 
-- **The CTA band and footer** used to earn emphasis by *being* deep-slate on a light page. On an all-slate page that dissolves. The CTA band therefore **inverts to white** — the single light block on a dark site, which is the strongest call to action the layout can make. The footer stays slate and gains a 2px top rule. `.btn-paper` follows the band: it was a light button on a dark band, and is now a dark button on a light one.
+- **The CTA band and footer** used to earn emphasis by *being* deep-slate on a light page. On an all-slate page that dissolves. The CTA band therefore **inverts to white** — see *Light islands* above. The footer stays slate and gains a 2px top rule. `.btn-paper` follows the band: it was a light button on a dark band, and is now a dark button on a light one.
 - **`.service-tile-slate` flips to a white fill**, because a slate tile on a slate ground is an empty outline and the grid needs four accented tiles out of eight.
 - **The duotone inks are pinned to literals.** They are photographic values, not page colours — the highlight ink must stay light and the shadow ink dark whatever the ground does. They were picking up `--ground` / `--fg` by name, which inverted them and broke the photograph. Pinning them means a future theme change cannot silently invert a photo again.
 
@@ -260,9 +279,16 @@ Every module guards on element presence, so one file serves every page.
 
 On the light build the pale owl was a 1.20:1 whisper against white. Left alone on slate it measures **10.2:1** and dominates the hero, so the dark counterpart was cut to `#24406E` — **1.18:1** on the ground, matching the original's weight almost exactly.
 
-**Every mark on the site is now reverse-white**, and that is mandatory rather than stylistic. The colour lockup contains white shapes (`.cls-8`) that are **knockouts**: they read as the ground showing through, so on a dark ground the lockup renders as damaged artwork. §1.5 shows reverse-white on deep-slate for exactly this reason.
+**Which mark goes where is decided by the ground, not by taste.** The colour lockup contains white shapes (`.cls-8`) that are **knockouts**: they read as the ground showing through, so on a dark ground it renders as damaged artwork. §1.5 shows reverse-white on deep-slate for exactly this reason.
 
-The favicon is the one exception and stays full-colour — it sits in a browser tab, not on the page ground, so §1.4's "primary colour version whenever possible" still applies there.
+| Placement | Ground | Mark |
+|---|---|---|
+| Navbar (all three sizes) | white — a light island | **full colour** |
+| Footer | slate | reverse-white |
+| Sign-in card | slate | reverse-white wordmark |
+| Favicon | browser tab, not the page | **full colour** |
+
+The navbar is why the light island exists. §1.4 asks for the primary colour version wherever possible, and on an all-dark site the colour lockup would otherwise appear nowhere but the favicon.
 
 ### Minimum sizes — guide §1.3
 
@@ -308,7 +334,7 @@ Footer uses reverse-white at 220px (already above the floor). The sign-in card u
 - [ ] Official owl symbol file — the current ones were manually re-`viewBox`ed, which §1.6 lists as a don't
 - [ ] Sign off `--cerulean-deep` `#174772` / `--blush-deep` `#43466A` — brand colours mixed into the ground at 18%, but not in §2.1
 - [ ] Sign off `amigos360-owl-wash-dark.svg` `#24406E` — a recolour of an already-derived owl, so it inherits both the §1.6 "unapproved colour variation" and "do not crop manually" problems
-- [ ] **Confirm the dark ground is wanted.** It is defensible — §1.5 sanctions reverse-white on deep-slate, and the guide's own cover uses it — but the guide's *layout* pages are predominantly white, and going dark-only means the full-colour lockup never appears anywhere on the site except the favicon
+- [ ] **Confirm the dark ground is wanted.** It is defensible — §1.5 sanctions reverse-white on deep-slate, and the guide's own cover uses it — though the guide's *layout* pages are predominantly white. The §1.4 objection is now largely answered: the light navbar carries the full-colour lockup on every page, so the primary colour version is present throughout rather than confined to the favicon
 - [ ] Web licences for Mont and Helvetica Now, if held (§3.1 / §3.2)
 - [ ] **Positioning mismatch.** The guide's brand story describes a *"creative platform… more than a marketplace"* connecting businesses with designers. The site copy sells a *design subscription service*. Both came from the client, and the copy is used verbatim, so this is theirs to reconcile — but it should not go live unresolved.
 

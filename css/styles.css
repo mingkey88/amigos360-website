@@ -88,6 +88,12 @@
      hairline inverts to white at low alpha; ink at 16% would be invisible. */
   --rule: 1px solid rgba(255, 255, 255, 0.24);
   --rule-strong: 2px solid var(--fg);
+
+  /* The same two rules for the LIGHT ISLANDS — the navbar and the CTA band,
+     which invert against the dark page. Anything structural inside one of
+     those has to use these, or it draws white on white. */
+  --rule-on-light: 1px solid rgba(35, 31, 32, 0.16);
+  --rule-strong-on-light: 2px solid var(--on-light);
   --border-w: 2px;
   --print-shadow: 4px 4px 0 var(--fg);
   --print-shadow-sm: 3px 3px 0 var(--fg);
@@ -274,13 +280,22 @@ summary:focus-visible {
 
 .btn-full { width: 100%; }
 
-/* ===== NAVBAR ===== */
+/* ===== NAVBAR =====
+   A LIGHT ISLAND, like the CTA band. This exists so the full-colour lockup has
+   somewhere to live: its white shapes are knockouts, so it can only sit on a
+   light ground, and §1.4 asks for the primary colour version wherever possible.
+   Without this band the colour lockup would appear nowhere but the favicon.
+
+   Everything structural inside here therefore uses the -on-light rules and
+   --on-light itself. The bar is sticky, so it floats as a light strip over dark
+   content while scrolling — which makes its bottom border load-bearing rather
+   than decorative. */
 .navbar {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: var(--ground);
-  border-bottom: var(--rule-strong);
+  background-color: var(--white);
+  border-bottom: var(--rule-strong-on-light);
 }
 
 .navbar-inner {
@@ -314,7 +329,7 @@ summary:focus-visible {
   font-family: var(--font-display);
   font-size: 1.0625rem;
   font-weight: 600;
-  color: var(--fg);
+  color: var(--on-light);
   padding-block: 6px;
   border-bottom: 2px solid transparent;
   transition: border-color 0.18s var(--ease);
@@ -326,10 +341,18 @@ summary:focus-visible {
 .nav-divider {
   width: 1px;
   height: 26px;
-  background-color: rgba(255, 255, 255, 0.28);
+  background-color: rgba(35, 31, 32, 0.28);
 }
 
-.nav-cta { padding: 13px 22px; }
+/* .btn's border and print shadow are white, which disappears on this band.
+   The cerulean fill and white label are untouched — that pair is 3.22:1
+   regardless of ground, so the 19px/700 lock still covers it. */
+.nav-cta {
+  padding: 13px 22px;
+  border-color: var(--on-light);
+  box-shadow: 4px 4px 0 var(--on-light);
+}
+.nav-cta:active { box-shadow: 1px 1px 0 var(--on-light); }
 
 .nav-toggle {
   display: none;
@@ -339,15 +362,15 @@ summary:focus-visible {
   width: 48px;
   height: 48px;
   padding: 0 10px;
-  border: var(--border-w) solid var(--fg);
-  background-color: var(--ground);
+  border: var(--border-w) solid var(--on-light);
+  background-color: var(--white);
 }
 
 .nav-toggle-bar {
   display: block;
   height: 2px;
   width: 100%;
-  background-color: var(--fg);
+  background-color: var(--on-light);
   transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
 }
 
@@ -969,15 +992,15 @@ summary:focus-visible {
     align-items: stretch;
     gap: 0;
     padding: var(--s-md) var(--container-pad) var(--s-lg);
-    background-color: var(--ground);
-    border-bottom: var(--rule-strong);
+    background-color: var(--white);
+    border-bottom: var(--rule-strong-on-light);
   }
   .nav-menu-open { display: flex; }
 
   .nav-link {
     font-size: 1.25rem;
     padding-block: 14px;
-    border-bottom: var(--rule);
+    border-bottom: var(--rule-on-light);
   }
   .nav-divider { display: none; }
   .nav-cta { margin-top: var(--s-md); }
