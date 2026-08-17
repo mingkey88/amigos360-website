@@ -14,28 +14,42 @@
                                (245,146,159) disagrees with its HEX by ~2/255;
                                the HEX is taken as authoritative. */
 
-  /* Neutrals — §2.1 specifies 100% White plus a black ramp. Nothing warm. */
+  /* ---- DARK THEME ------------------------------------------------------
+     One theme, dark. Deep Slate is the ground, which is why it is a brand
+     colour rather than an invented dark: §1.5 shows the reverse-white lockup
+     on exactly this background, and the guide's own cover and section
+     dividers use it.
+
+     The light build separated cards from the ground with 2px ink borders and
+     4px ink print shadows. This one runs the identical mechanism inverted —
+     white borders, white shadows, on slate — so the construction stays
+     visible, which is the whole point of it.
+
+     --fg and --ground are named for their ROLE, not their colour, because the
+     role is what the ~60 call sites actually care about.                   */
+  --ground:      #1C355E;   /* page AND card fill — Deep Slate, PANTONE 534 C */
+  --fg:          #FFFFFF;   /* text, 2px borders, 4px print shadows — 12.2:1  */
+  --fg-muted:    var(--black-25);   /* 6.6:1 on slate                        */
+
+  /* Text sitting on a LIGHT fill — blush tiles, white tiles, the inverted CTA
+     band. This is the old --ink value and keeps its meaning (cls-5 in the
+     official logo artwork, used 11× in the lockup), but it carries no
+     structural role any more: ink on slate is 1.3:1. */
+  --on-light:    #231F20;
+
+  /* §2.1's black ramp. The light build read it from the dark end for muted
+     text; this one reads it from the light end. Same ramp, other direction. */
   --white:       #FFFFFF;   /* 100% White */
-  --paper:       #FFFFFF;   /* Alias of --white. This was an off-white #F7F5F0
-                               ground; the guide has no second light ground, so
-                               the two converged. The name is kept so call sites
-                               still read "page ground" vs "card fill", and so
-                               a future approved tint has one place to land. */
-  --black-75:    #404040;   /* muted body text — 10.4:1 on white */
-  --black-50:    #808080;   /* 3.95:1 — large text and non-text use only */
-  --black-25:    #BFBFBF;   /* 1.84:1 — rules and hairlines only, never text */
-  --grey:        var(--black-75);
+  --black-75:    #404040;   /* 1.2:1 on slate — unusable here, kept for reference */
+  --black-50:    #808080;   /* 1.9:1 on slate — non-text only */
+  --black-25:    #BFBFBF;   /* 6.6:1 on slate — muted body text */
 
-  /* --ink stays off the black ramp deliberately: #231F20 is cls-5 in the
-     official logo artwork, used 11× in the lockup, so it is brand colour rather
-     than an invented neutral. It measures 16.3:1 on white; pure #000 would be
-     21:1, which is harsh at an 18px body size. */
-  --ink:         #231F20;
-
-  /* Tints of approved brand colours, used as flat fills only and never behind
-     text. Not in the guide — flagged for client sign-off. */
-  --cerulean-wash: #E5F4FA;
-  --blush-wash:    #FDEBED;
+  /* Brand colours mixed into the ground at 18%. Flat fills only, never behind
+     text. The light build's #E5F4FA / #FDEBED were light tints and die on a
+     dark ground. Derived rather than specified — flagged for sign-off, exactly
+     like the pair they replace. */
+  --cerulean-deep: #174772;
+  --blush-deep:    #43466A;
 
   /* Type — the guide specifies exactly TWO faces. Do not add a third.
      §3.1 primary (Mont) carries headlines, titles and key messaging.
@@ -70,12 +84,13 @@
   --container-max: 1280px;
   --container-pad: clamp(20px, 5vw, 40px);
 
-  /* Structure — Bauhaus keeps its construction visible */
-  --rule: 1px solid rgba(35, 31, 32, 0.16);
-  --rule-strong: 2px solid var(--ink);
+  /* Structure — Bauhaus keeps its construction visible. On a dark ground the
+     hairline inverts to white at low alpha; ink at 16% would be invisible. */
+  --rule: 1px solid rgba(255, 255, 255, 0.24);
+  --rule-strong: 2px solid var(--fg);
   --border-w: 2px;
-  --print-shadow: 4px 4px 0 var(--ink);
-  --print-shadow-sm: 3px 3px 0 var(--ink);
+  --print-shadow: 4px 4px 0 var(--fg);
+  --print-shadow-sm: 3px 3px 0 var(--fg);
 
   --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
   /* Entrance curve. Strong ease-out — never ease-in on an entrance, it delays
@@ -100,8 +115,8 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background-color: var(--paper);
-  color: var(--ink);
+  background-color: var(--ground);
+  color: var(--fg);
   font-family: var(--font-body);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
@@ -135,14 +150,16 @@ summary:focus-visible {
   outline-offset: 3px;
 }
 
+/* Inverted: a slate skip link on a slate page would be invisible when it
+   appears over the header. White fill, ink label — 16.3:1. */
 .skip-link {
   position: absolute;
   left: -9999px;
   top: 0;
   z-index: 999;
   padding: 12px 20px;
-  background-color: var(--deep-slate);
-  color: var(--white);
+  background-color: var(--white);
+  color: var(--on-light);
   font-family: var(--font-display);
   font-weight: 700;
 }
@@ -171,7 +188,7 @@ summary:focus-visible {
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--grey);
+  color: var(--fg-muted);
   margin-bottom: var(--s-md);
 }
 
@@ -195,7 +212,7 @@ summary:focus-visible {
 
 .section-intro {
   font-size: var(--fs-body);
-  color: var(--grey);
+  color: var(--fg-muted);
   max-width: 54ch;
   margin-top: var(--s-md);
 }
@@ -212,7 +229,7 @@ summary:focus-visible {
   justify-content: center;
   gap: var(--s-xs);
   padding: 16px 28px;
-  border: var(--border-w) solid var(--ink);
+  border: var(--border-w) solid var(--fg);
   border-radius: 0;
   font-family: var(--font-display);
   font-size: 1.1875rem;   /* 19px — AA large-text threshold at 700 */
@@ -229,18 +246,21 @@ summary:focus-visible {
   color: var(--white);
   box-shadow: var(--print-shadow);
 }
-.btn-primary:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.btn-primary:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--fg); }
 
-.btn-slate {
-  background-color: var(--deep-slate);
-  color: var(--white);
-  box-shadow: var(--print-shadow);
-}
-.btn-slate:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+/* .btn-slate is gone. It was a deep-slate fill, which on a deep-slate ground
+   renders as an invisible button, and grep across all six pages confirms it was
+   never used in markup. .btn-paper below is the light secondary. */
 
+/* The button for a LIGHT surface — the inverted CTA band is its only use, on
+   all four pages that carry the band. It was a light button on a dark band; it
+   is now a dark button on a light one, which is the same relationship.
+   border-color has to be overridden: .btn's is white, which would disappear
+   into the band. */
 .btn-paper {
-  background-color: var(--paper);
-  color: var(--ink);
+  background-color: var(--ground);
+  border-color: var(--on-light);
+  color: var(--fg);
   box-shadow: 4px 4px 0 var(--blush);
 }
 .btn-paper:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--blush); }
@@ -248,8 +268,7 @@ summary:focus-visible {
 /* Hover lift is pointer-gated: a tap on touch fires :hover and leaves the
    button stuck in its lifted state until you tap elsewhere. */
 @media (hover: hover) and (pointer: fine) {
-  .btn-primary:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
-  .btn-slate:hover   { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+  .btn-primary:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--fg); }
   .btn-paper:hover   { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--blush); }
 }
 
@@ -260,7 +279,7 @@ summary:focus-visible {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: var(--paper);
+  background-color: var(--ground);
   border-bottom: var(--rule-strong);
 }
 
@@ -295,7 +314,7 @@ summary:focus-visible {
   font-family: var(--font-display);
   font-size: 1.0625rem;
   font-weight: 600;
-  color: var(--deep-slate);
+  color: var(--fg);
   padding-block: 6px;
   border-bottom: 2px solid transparent;
   transition: border-color 0.18s var(--ease);
@@ -307,7 +326,7 @@ summary:focus-visible {
 .nav-divider {
   width: 1px;
   height: 26px;
-  background-color: rgba(35, 31, 32, 0.22);
+  background-color: rgba(255, 255, 255, 0.28);
 }
 
 .nav-cta { padding: 13px 22px; }
@@ -320,22 +339,26 @@ summary:focus-visible {
   width: 48px;
   height: 48px;
   padding: 0 10px;
-  border: var(--border-w) solid var(--ink);
-  background-color: var(--white);
+  border: var(--border-w) solid var(--fg);
+  background-color: var(--ground);
 }
 
 .nav-toggle-bar {
   display: block;
   height: 2px;
   width: 100%;
-  background-color: var(--ink);
+  background-color: var(--fg);
   transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
 }
 
-/* ===== FOOTER ===== */
+/* ===== FOOTER =====
+   The footer used to separate itself by being deep-slate against a light page.
+   On a deep-slate page that distinction is gone, so a 2px rule does the job
+   instead — the same device every other section boundary already uses. */
 .footer {
-  background-color: var(--deep-slate);
-  color: var(--white);
+  background-color: var(--ground);
+  color: var(--fg);
+  border-top: var(--rule-strong);
   padding-top: var(--s-2xl);
   padding-bottom: var(--s-lg);
 }
@@ -389,13 +412,26 @@ summary:focus-visible {
 
 .footer-legal { display: flex; gap: var(--s-md); }
 
-/* ===== CTA BAND (shared component) ===== */
+/* ===== CTA BAND (shared component) =====
+   INVERTED. On the light build this band earned its emphasis by being the one
+   dark block on a light page. That mechanism is unavailable now, so it flips:
+   the single LIGHT block on a dark page, which is the strongest call to action
+   the layout can make. The intent is preserved by reversing the device rather
+   than abandoning it.
+
+   The markup still carries .text-light and .eyebrow-light from the light
+   build. Rather than edit four pages, they are overridden inside this section —
+   a two-level selector, which is the file's limit. */
 .section-cta {
-  background-color: var(--deep-slate);
-  color: var(--white);
+  background-color: var(--white);
+  color: var(--on-light);
   padding-block: var(--section-py);
   overflow: hidden;
 }
+
+.section-cta .text-light { color: var(--on-light); }
+.section-cta .eyebrow-light { color: var(--black-75); }
+.section-cta .eyebrow-marker-blush { background-color: var(--cerulean); }
 
 .cta-inner {
   display: grid;
@@ -414,7 +450,7 @@ summary:focus-visible {
 .cta-sub {
   margin-top: var(--s-md);
   font-size: var(--fs-body);
-  color: rgba(255, 255, 255, 0.78);
+  color: var(--black-75);   /* the band is light, so muted text reads dark here */
   max-width: 46ch;
 }
 
@@ -437,12 +473,12 @@ summary:focus-visible {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  border: var(--border-w) solid var(--white);
+  border: var(--border-w) solid var(--on-light);
   background-image: conic-gradient(
     var(--cerulean) 0deg 90deg,
     var(--blush) 90deg 180deg,
     transparent 180deg 270deg,
-    var(--white) 270deg 360deg
+    var(--ground) 270deg 360deg
   );
 }
 
@@ -454,7 +490,7 @@ summary:focus-visible {
   bottom: -10%;
   width: 62%;
   aspect-ratio: 1;
-  border: var(--border-w) solid var(--white);
+  border: var(--border-w) solid var(--on-light);
   z-index: 2;
 }
 
@@ -495,14 +531,20 @@ summary:focus-visible {
    Final shadows land on shadow x highlight, final highlights on the highlight
    ink alone — so the HIGHLIGHT ink must be light or the image goes muddy.
    Cerulean is a mid-tone and caps brightness, so it is only ever a shadow ink. */
+/* These four values are PHOTOGRAPHIC inks, not page colours, so they do not
+   follow the theme. The highlight ink has to stay light whatever the ground
+   is, or the plate goes muddy; the shadow ink has to stay dark. Both were
+   picking up --ground / --fg by name before, which inverted them and broke the
+   duotone. They are pinned to literals now so a future theme change cannot
+   silently invert a photograph again. */
 .photo-duo-cerulean { background-color: var(--cerulean); }
-.photo-duo-cerulean .photo-tint { background-color: var(--paper); }
+.photo-duo-cerulean .photo-tint { background-color: var(--white); }
 
 .photo-duo-blush { background-color: var(--deep-slate); }
 .photo-duo-blush .photo-tint { background-color: var(--blush); }
 
-.photo-duo-slate { background-color: var(--ink); }
-.photo-duo-slate .photo-tint { background-color: var(--cerulean-wash); }
+.photo-duo-slate { background-color: var(--on-light); }
+.photo-duo-slate .photo-tint { background-color: #E5F4FA; }
 
 /* Straight grayscale, no second ink — for the client logo wall */
 .photo-mono .photo-img { mix-blend-mode: normal; }
@@ -532,9 +574,9 @@ summary:focus-visible {
   display: flex;
   align-items: flex-end;
   padding: var(--s-md);
-  border: var(--border-w) solid var(--ink);
-  background-color: var(--cerulean-wash);
-  color: var(--ink);
+  border: var(--border-w) solid var(--fg);
+  background-color: var(--cerulean-deep);
+  color: var(--fg);
   overflow: hidden;
 }
 
@@ -553,11 +595,11 @@ summary:focus-visible {
 
 /* Ink, not white. White on cerulean is 3.22:1 — fine for a 24px+ bold service
    label, but these captions are 13px, which needs 4.5:1. Ink gives 5.07:1. */
-.placeholder-cerulean { background-color: var(--cerulean); color: var(--ink); }
-.placeholder-slate    { background-color: var(--deep-slate); color: var(--white); }
-.placeholder-blush    { background-color: var(--blush); color: var(--ink); }
-.placeholder-paper    { background-color: var(--paper); color: var(--ink); }
-.placeholder-white    { background-color: var(--white); color: var(--ink); }
+.placeholder-cerulean { background-color: var(--cerulean); color: var(--on-light); }
+.placeholder-slate    { background-color: var(--cerulean-deep); color: var(--fg); }
+.placeholder-blush    { background-color: var(--blush); color: var(--on-light); }
+.placeholder-paper    { background-color: var(--ground); color: var(--fg); }
+.placeholder-white    { background-color: var(--white); color: var(--on-light); }
 
 /* ===== HERO ===== */
 .section-hero {
@@ -590,7 +632,7 @@ summary:focus-visible {
 
 .hero-sub {
   font-size: clamp(1.125rem, 1.5vw, 1.3125rem);
-  color: var(--grey);
+  color: var(--fg-muted);
   max-width: 46ch;
 }
 
@@ -621,12 +663,12 @@ summary:focus-visible {
   width: 82%;
   aspect-ratio: 1;
   border-radius: 50%;
-  border: var(--border-w) solid var(--ink);
+  border: var(--border-w) solid var(--fg);
   background-image: conic-gradient(
     var(--cerulean)   0deg  90deg,
-    var(--deep-slate) 90deg 180deg,
+    var(--white)      90deg 180deg,
     var(--blush)      180deg 270deg,
-    var(--paper)      270deg 360deg
+    var(--ground)      270deg 360deg
   );
 }
 
@@ -638,7 +680,7 @@ summary:focus-visible {
   bottom: -4%;
   width: 42%;
   aspect-ratio: 3 / 4;
-  border: var(--border-w) solid var(--ink);
+  border: var(--border-w) solid var(--fg);
   z-index: 2;
 }
 
@@ -650,7 +692,7 @@ summary:focus-visible {
   height: 0;
   border-left: 46px solid transparent;
   border-right: 46px solid transparent;
-  border-bottom: 80px solid var(--deep-slate);
+  border-bottom: 80px solid var(--white);
 }
 
 /* Owl at low emphasis, bleeding off the hero's right edge (clipped by
@@ -695,7 +737,7 @@ summary:focus-visible {
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--grey);
+  color: var(--fg-muted);
   opacity: 0.75;
 }
 
@@ -720,13 +762,16 @@ summary:focus-visible {
   gap: var(--s-2xl);
   min-height: 232px;
   padding: var(--s-md);
-  border: var(--border-w) solid var(--ink);
-  background-color: var(--white);
+  border: var(--border-w) solid var(--fg);
+  background-color: var(--ground);
 }
 
+/* .service-tile-slate flips to a light fill. A deep-slate tile on a deep-slate
+   ground is an empty outline, and the grid needs four accented tiles out of
+   eight to keep its rhythm. */
 .service-tile-cerulean { background-color: var(--cerulean); color: var(--white); }
-.service-tile-slate    { background-color: var(--deep-slate); color: var(--white); }
-.service-tile-blush    { background-color: var(--blush); color: var(--ink); }
+.service-tile-slate    { background-color: var(--white);    color: var(--on-light); }
+.service-tile-blush    { background-color: var(--blush);    color: var(--on-light); }
 
 .service-label {
   font-size: var(--fs-h3);
@@ -738,7 +783,7 @@ summary:focus-visible {
 .service-icon {
   width: 46px;
   height: 46px;
-  background-color: var(--ink);
+  background-color: var(--fg);
 }
 .service-icon-circle    { border-radius: 50%; }
 .service-icon-diamond   { transform: rotate(45deg); width: 36px; height: 36px; margin: 5px; }
@@ -748,28 +793,40 @@ summary:focus-visible {
   width: 0; height: 0; background-color: transparent;
   border-left: 25px solid transparent;
   border-right: 25px solid transparent;
-  border-bottom: 44px solid var(--ink);
+  border-bottom: 44px solid var(--fg);
 }
 .service-icon-semi      { height: 24px; border-radius: 46px 46px 0 0; margin-top: 22px; }
 .service-icon-quarter   { border-radius: 100% 0 0 0; }
 .service-icon-dots      {
   background-color: transparent;
-  background-image: radial-gradient(var(--ink) 42%, transparent 44%);
+  background-image: radial-gradient(var(--fg) 42%, transparent 44%);
   background-size: 15.33px 15.33px;
 }
 
-/* Icon colour follows tile contrast */
-.service-tile-cerulean .service-icon,
-.service-tile-slate .service-icon { background-color: var(--white); }
-.service-tile-cerulean .service-icon-triangle,
-.service-tile-slate .service-icon-triangle {
+/* Icon colour follows tile contrast. The two accented tiles now pull in
+   opposite directions — cerulean is dark enough to need a white icon, the
+   flipped slate tile is light and needs an ink one. */
+.service-tile-cerulean .service-icon { background-color: var(--white); }
+.service-tile-cerulean .service-icon-triangle {
   background-color: transparent;
   border-bottom-color: var(--white);
 }
-.service-tile-cerulean .service-icon-dots,
-.service-tile-slate .service-icon-dots {
+.service-tile-cerulean .service-icon-dots {
   background-color: transparent;
   background-image: radial-gradient(var(--white) 42%, transparent 44%);
+}
+
+.service-tile-slate .service-icon,
+.service-tile-blush .service-icon { background-color: var(--on-light); }
+.service-tile-slate .service-icon-triangle,
+.service-tile-blush .service-icon-triangle {
+  background-color: transparent;
+  border-bottom-color: var(--on-light);
+}
+.service-tile-slate .service-icon-dots,
+.service-tile-blush .service-icon-dots {
+  background-color: transparent;
+  background-image: radial-gradient(var(--on-light) 42%, transparent 44%);
 }
 
 /* ===== PROCESS =====
@@ -777,7 +834,7 @@ summary:focus-visible {
    The numbering is load-bearing here: the plan really is a sequence. */
 .section-process {
   padding-block: var(--section-py);
-  background-color: var(--white);
+  background-color: var(--ground);
   border-bottom: var(--rule-strong);
 }
 
@@ -813,7 +870,7 @@ summary:focus-visible {
   font-weight: 800;
   line-height: 0.8;
   letter-spacing: -0.05em;
-  color: var(--deep-slate);
+  color: var(--fg);
 }
 
 .step-dial {
@@ -821,8 +878,8 @@ summary:focus-visible {
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  border: var(--border-w) solid var(--ink);
-  background-color: var(--paper);
+  border: var(--border-w) solid var(--fg);
+  background-color: var(--ground);
 }
 .step-dial-1 { background-image: conic-gradient(var(--cerulean) 0deg 90deg,  transparent 90deg 360deg); }
 .step-dial-2 { background-image: conic-gradient(var(--cerulean) 0deg 180deg, transparent 180deg 360deg); }
@@ -838,7 +895,7 @@ summary:focus-visible {
 
 .step-body {
   font-size: var(--fs-body-sm);
-  color: var(--grey);
+  color: var(--fg-muted);
 }
 
 /* ===== SCROLL REVEAL =====
@@ -912,7 +969,7 @@ summary:focus-visible {
     align-items: stretch;
     gap: 0;
     padding: var(--s-md) var(--container-pad) var(--s-lg);
-    background-color: var(--paper);
+    background-color: var(--ground);
     border-bottom: var(--rule-strong);
   }
   .nav-menu-open { display: flex; }
@@ -1024,7 +1081,7 @@ summary:focus-visible {
 .page-intro {
   margin-top: var(--s-md);
   font-size: var(--fs-body);
-  color: var(--grey);
+  color: var(--fg-muted);
   max-width: 52ch;
 }
 
@@ -1040,9 +1097,9 @@ summary:focus-visible {
 
 .filter-button {
   padding: 10px 18px;
-  border: var(--border-w) solid var(--ink);
+  border: var(--border-w) solid var(--fg);
   background-color: transparent;
-  color: var(--ink);
+  color: var(--fg);
   font-family: var(--font-body);
   font-size: var(--fs-label);
   font-weight: 500;
@@ -1050,18 +1107,18 @@ summary:focus-visible {
   text-transform: uppercase;
   transition: background-color 0.16s var(--ease), color 0.16s var(--ease);
 }
-.filter-button:hover { background-color: var(--cerulean-wash); }
+.filter-button:hover { background-color: var(--cerulean-deep); }
 
 .filter-button-active {
-  background-color: var(--deep-slate);
-  color: var(--white);
+  background-color: var(--cerulean);
+  color: var(--on-light);
 }
-.filter-button-active:hover { background-color: var(--deep-slate); }
+.filter-button-active:hover { background-color: var(--cerulean); }
 
 .filter-status {
   font-family: var(--font-body);
   font-size: var(--fs-label);
-  color: var(--grey);
+  color: var(--fg-muted);
   margin-bottom: var(--s-md);
 }
 
@@ -1075,7 +1132,7 @@ summary:focus-visible {
   gap: var(--s-md);
 }
 
-.portfolio-tile { border: var(--border-w) solid var(--ink); }
+.portfolio-tile { border: var(--border-w) solid var(--fg); }
 .portfolio-tile-wide { grid-column: span 2; aspect-ratio: 16 / 9; }
 .portfolio-tile-tall { aspect-ratio: 4 / 5; }
 .portfolio-tile-square { aspect-ratio: 1 / 1; }
@@ -1119,7 +1176,7 @@ summary:focus-visible {
   border-bottom: var(--rule-strong);
 }
 
-.plan-head-featured { background-color: var(--cerulean-wash); }
+.plan-head-featured { background-color: var(--cerulean-deep); }
 
 .plan-name {
   font-family: var(--font-display);
@@ -1132,7 +1189,7 @@ summary:focus-visible {
   line-height: 1.2;
   padding: 4px 10px;
   background-color: var(--blush);
-  color: var(--ink);
+  color: var(--on-light);
   font-family: var(--font-body);
   font-size: 0.6875rem;
   font-weight: 500;
@@ -1152,7 +1209,7 @@ summary:focus-visible {
   font-size: 0.6875rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--grey);
+  color: var(--fg-muted);
 }
 
 .group-title {
@@ -1160,8 +1217,8 @@ summary:focus-visible {
   padding: var(--s-md);
   border-right: var(--rule-strong);
   border-bottom: var(--rule-strong);
-  background-color: var(--deep-slate);
-  color: var(--white);
+  background-color: var(--cerulean);
+  color: var(--on-light);
   font-family: var(--font-body);
   font-size: var(--fs-label);
   font-weight: 500;
@@ -1185,7 +1242,7 @@ summary:focus-visible {
   border-bottom: var(--rule);
 }
 
-.tier-cell-featured { background-color: var(--cerulean-wash); }
+.tier-cell-featured { background-color: var(--cerulean-deep); }
 
 /* Cerulean disc + white check as a background image — Webflow sets this in the
    Background panel, so it rebuilds without custom code. */
@@ -1206,7 +1263,7 @@ summary:focus-visible {
 
 .tier-no {
   height: 2px;
-  background-color: var(--grey);
+  background-color: var(--fg-muted);
   opacity: 0.55;
 }
 
@@ -1215,8 +1272,8 @@ summary:focus-visible {
 .plan-cards { display: none; }
 
 .plan-card {
-  border: var(--border-w) solid var(--ink);
-  background-color: var(--white);
+  border: var(--border-w) solid var(--fg);
+  background-color: var(--ground);
   box-shadow: var(--print-shadow);
   margin-bottom: var(--s-lg);
 }
@@ -1237,7 +1294,7 @@ summary:focus-visible {
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--grey);
+  color: var(--fg-muted);
   margin-block: var(--s-md) var(--s-xs);
 }
 
@@ -1250,7 +1307,7 @@ summary:focus-visible {
   border-bottom: var(--rule);
 }
 
-.plan-card-item-off { color: var(--grey); }
+.plan-card-item-off { color: var(--fg-muted); }
 
 .plan-card-cta { padding: 0 var(--s-md) var(--s-md); }
 
@@ -1276,7 +1333,7 @@ summary:focus-visible {
   font-size: var(--fs-h3);
   font-weight: 700;
   line-height: var(--lh-snug);
-  color: var(--deep-slate);
+  color: var(--fg);
 }
 .faq-question:hover { color: var(--cerulean); }
 
@@ -1286,7 +1343,7 @@ summary:focus-visible {
   flex-shrink: 0;
   width: 30px;
   height: 30px;
-  border: var(--border-w) solid var(--ink);
+  border: var(--border-w) solid var(--fg);
   border-radius: 50%;
   transition: transform 0.2s var(--ease), background-color 0.2s var(--ease);
 }
@@ -1296,7 +1353,7 @@ summary:focus-visible {
   position: absolute;
   top: 50%; left: 50%;
   width: 12px; height: 2px;
-  background-color: var(--ink);
+  background-color: var(--fg);
   transform: translate(-50%, -50%);
 }
 .faq-toggle::after { transform: translate(-50%, -50%) rotate(90deg); }
@@ -1306,7 +1363,7 @@ summary:focus-visible {
 .faq-answer {
   padding-bottom: var(--s-md);
   max-width: 68ch;
-  color: var(--grey);
+  color: var(--fg-muted);
 }
 
 /* ===== BOOK A CALL ===== */
@@ -1357,12 +1414,12 @@ summary:focus-visible {
   margin-bottom: var(--s-xs);
 }
 
-.reassure-body { color: var(--grey); max-width: 50ch; }
+.reassure-body { color: var(--fg-muted); max-width: 50ch; }
 
 .form-card {
   padding: var(--s-lg);
-  border: var(--border-w) solid var(--ink);
-  background-color: var(--white);
+  border: var(--border-w) solid var(--fg);
+  background-color: var(--ground);
   box-shadow: var(--print-shadow);
 }
 
@@ -1382,19 +1439,19 @@ summary:focus-visible {
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--grey);
+  color: var(--fg-muted);
 }
 
 .form-input,
 .form-select {
   width: 100%;
   padding: 13px 14px;
-  border: var(--border-w) solid var(--ink);
+  border: var(--border-w) solid var(--fg);
   border-radius: 0;
-  background-color: var(--paper);
+  background-color: var(--ground);
   font-family: var(--font-body);
   font-size: var(--fs-body-sm);
-  color: var(--ink);
+  color: var(--fg);
 }
 /* The resting fill used to be the off-white paper ground, so focus lifted the
    field to white. With --paper and --white converged on the guide's single
@@ -1412,8 +1469,8 @@ summary:focus-visible {
 
 .form-success {
   padding: var(--s-lg);
-  border: var(--border-w) solid var(--ink);
-  background-color: var(--cerulean-wash);
+  border: var(--border-w) solid var(--fg);
+  background-color: var(--cerulean-deep);
   box-shadow: var(--print-shadow);
 }
 
@@ -1427,13 +1484,13 @@ summary:focus-visible {
 .embed-slot {
   margin-top: var(--s-lg);
   padding: var(--s-lg);
-  border: var(--border-w) dashed var(--grey);
+  border: var(--border-w) dashed var(--fg-muted);
   text-align: center;
   font-family: var(--font-body);
   font-size: var(--fs-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--grey);
+  color: var(--fg-muted);
 }
 
 /* ===== SIGN IN ===== */
@@ -1456,10 +1513,10 @@ summary:focus-visible {
   transform: translate(-62%, -58%);
   border-radius: 50%;
   background-image: conic-gradient(
-    var(--cerulean-wash) 0deg 90deg,
-    var(--blush-wash) 90deg 180deg,
+    var(--cerulean-deep) 0deg 90deg,
+    var(--blush-deep) 90deg 180deg,
     transparent 180deg 270deg,
-    var(--cerulean-wash) 270deg 360deg
+    var(--cerulean-deep) 270deg 360deg
   );
 }
 
@@ -1470,8 +1527,8 @@ summary:focus-visible {
   max-width: 420px;
   margin-inline: auto;   /* the flex centring applies to .container, not this */
   padding: var(--s-lg);
-  border: var(--border-w) solid var(--ink);
-  background-color: var(--white);
+  border: var(--border-w) solid var(--fg);
+  background-color: var(--ground);
   box-shadow: var(--print-shadow);
 }
 
@@ -1490,8 +1547,8 @@ summary:focus-visible {
   margin-top: var(--s-md);
   padding-block: 4px;
   font-size: var(--fs-body-sm);
-  color: var(--deep-slate);
-  border-bottom: 1px solid var(--deep-slate);
+  color: var(--fg);
+  border-bottom: 1px solid var(--fg);
 }
 .forgot-link:hover { color: var(--cerulean); border-bottom-color: var(--cerulean); }
 

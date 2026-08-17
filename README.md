@@ -8,7 +8,9 @@ Static, dependency-free mockup. Open `index.html` directly in a browser — no b
 
 ## Design direction
 
-**Bauhaus photomontage** — flat colour blocking, geometric primitives, visible grid structure, oversized display type, hard 4px print shadows, *plus duotone photography cut into geometric shapes*.
+**Bauhaus photomontage, on a dark ground** — flat colour blocking, geometric primitives, visible grid structure, oversized display type, hard 4px print shadows, *plus duotone photography cut into geometric shapes*.
+
+The ground is Deep Slate and there is no light theme. See *Colour tokens* for why that is a brand-sanctioned choice rather than a departure, and for the one section that deliberately inverts against it.
 
 That last part is the Moholy-Nagy / Lissitzky / Rodchenko Constructivist language: a grayscale plate printed in two inks, cropped to a circle or arch, overlapped with flat colour. It is what makes the direction read as 2D and avant-garde rather than merely clean, and it is period-correct — Moholy-Nagy was a Bauhaus master and photomontage was Bauhaus practice, not a modern graft.
 
@@ -32,45 +34,58 @@ The numbering in "How we work" is load-bearing: the plan genuinely is a sequence
 
 ## Colour tokens
 
-Aligned to **Brand Guidelines v2 §2.1**. The three brand colours were already exact; the neutrals were not, and were corrected.
+**The site runs one theme, and it is dark.** Deep Slate is the ground. That is a brand colour, not an invented dark: §1.5 shows the reverse-white lockup on exactly this background, and the guide's own cover and section dividers use it.
 
-| Token | Value | Guide §2.1 | Role |
+| Token | Value | Guide | Role |
 |---|---|---|---|
+| `--ground` | `#1C355E` | PANTONE 534 C | **Page and card fill** |
+| `--fg` | `#FFFFFF` | 100% White | Text, 2px borders, 4px print shadows — 12.2:1 |
+| `--fg-muted` | → `--black-25` | 25% Black | Muted body text — 6.6:1 |
+| `--on-light` | `#231F20` | — | Text on a light fill; see below |
 | `--cerulean` | `#009ACF` | PANTONE 6121 C | Primary brand blue |
-| `--deep-slate` | `#1C355E` | PANTONE 534 C | Headings, footer, dark ground |
 | `--blush` | `#F7929E` | PANTONE 6043 C | Accent — shapes and fills only |
-| `--white` | `#FFFFFF` | 100% White | Page and card ground |
-| `--paper` | `#FFFFFF` | — | Alias of `--white`; see below |
-| `--black-75` | `#404040` | 75% Black | Muted body text — 10.4:1 on white |
-| `--black-50` | `#808080` | 50% Black | 3.95:1 — large text and non-text only |
-| `--black-25` | `#BFBFBF` | 25% Black | 1.84:1 — rules and hairlines, never text |
-| `--grey` | → `--black-75` | — | Every existing muted-text call site |
-| `--ink` | `#231F20` | — | Body text, borders, print shadow |
-| `--cerulean-wash` | `#E5F4FA` | — | Flat tint, never behind text |
-| `--blush-wash` | `#FDEBED` | — | Flat tint, never behind text |
+| `--white` | `#FFFFFF` | 100% White | Light fills: CTA band, one service tile, `.btn-paper` |
+| `--black-75` | `#404040` | 75% Black | 1.2:1 on slate — **unusable here**, kept for reference |
+| `--black-50` | `#808080` | 50% Black | 1.9:1 on slate — non-text only |
+| `--black-25` | `#BFBFBF` | 25% Black | 6.6:1 on slate — muted body text |
+| `--cerulean-deep` | `#174772` | — | Flat tint, never behind text |
+| `--blush-deep` | `#43466A` | — | Flat tint, never behind text |
 
-**The ground is now white.** It was an off-white `#F7F5F0`, which is a warm cream and has no basis in §2.1 — the guide's neutral system is 100% White plus a black ramp, with nothing warm in it. `--paper` is kept as an alias so the ~9 call sites still read "page ground" rather than "card fill", and so a future approved tint has one place to land.
+**`--fg` and `--ground` are named for their role, not their colour**, because the role is what the ~60 call sites care about. The previous build's `--ink` / `--paper` / `--grey` were renamed into them wholesale.
 
-This collapsed the paper/white pair that white cards used to sit on. It turned out to be safe: **every** white card already carries a 2px ink border and most carry a hard print shadow, so separation was being done by visible construction, not by fill contrast. That is the more Bauhaus mechanism of the two anyway. The one thing it did break is noted under Contrast rules below.
+**The construction mechanism is unchanged, just inverted.** The light build separated cards from the ground with 2px ink borders and 4px ink print shadows. This one uses white borders and white shadows on slate. Cards are the *same colour as the page* — separation is done entirely by visible construction, which is the point of the whole system.
 
-**`--ink` deliberately stays off the black ramp.** `#231F20` is `cls-5` in the official logo artwork, used 11× in the lockup, so it is brand colour rather than an invented neutral. It measures 16.3:1 on white; pure `#000` would be 21:1, which is harsh at an 18px body size. If strict ramp compliance is ever required, it is a one-line change.
+**§2.1's black ramp is read from the other end.** Muted text was 75% Black on white (10.4:1); it is now 25% Black on slate (6.6:1). Same ramp, opposite direction. 75% Black measures 1.2:1 here and is unusable — the token is kept only so nobody re-derives it.
 
-**The two washes are not in the guide.** They are tints of approved brand colours used as flat fills only, never behind text. Flagged for client sign-off.
+**`--on-light` is the old `--ink`.** It keeps its meaning — `#231F20` is `cls-5` in the official logo artwork, used 11× in the lockup — but it has no structural role any more, because ink on slate is 1.3:1. It survives only where text sits on a light fill: blush tiles, the white service tile, and the inverted CTA band.
 
-Ratio in use is roughly white 60% · deep-slate 20% · cerulean 15% · blush 5%.
+**The two deep tints are not in the guide.** Brand colours mixed into the ground at 18%, flat fills only, never behind text. The light build's `#E5F4FA` / `#FDEBED` were light tints and die on a dark ground. Flagged for sign-off, exactly like the pair they replace.
+
+Ratio in use is roughly deep-slate 65% · white 15% · cerulean 15% · blush 5%.
 
 ### Contrast rules — read before adding any component
 
-Two constraints fall out of the brand palette. Both are already enforced in `styles.css`; breaking them will break WCAG AA.
+All already enforced in `styles.css`; breaking them will break WCAG AA.
 
-1. **White on cerulean measures 3.22:1.** That clears AA for *large* text only. Every cerulean button is therefore locked to **700 weight at 19px minimum** (`.btn` sets `font-size: 1.1875rem`), plus a 2px ink border that carries the edge. **Never shrink a cerulean button's label below 19px** and never put small text on a cerulean fill.
-2. **Small text never sits on a cerulean fill.** The 24px/700 service labels clear the large-text bar at 3.22:1, but 13px captions do not — `.placeholder-cerulean` therefore uses **ink** text (5.07:1), not white. This was caught in audit after being got wrong once.
-3. **Blush never carries text on white** — the ratio is close to 1:1. Blush is a shape and background colour only. Ink on blush is 7.4:1 and deep-slate on blush is 5.6:1, both fine. Blush *on deep-slate* is 5.6:1, which is why the footer column titles use it.
-4. **`--black-50` and `--black-25` are not body-text colours.** 50% Black measures 3.95:1 on white, which clears AA for large text only; 25% Black is 1.84:1 and is for rules and hairlines. Only 75% Black and `--ink` are safe for body copy.
+1. **White on cerulean measures 3.22:1.** Ground-independent — neither colour touches the page ground, so this is unchanged from the light build. It clears AA for *large* text only, which is why every cerulean button is locked to **700 weight at 19px minimum** (`.btn` sets `font-size: 1.1875rem`). **Never shrink a cerulean button's label below 19px.**
+2. **Small text never sits on a cerulean fill.** The 24px/700 service labels clear the large-text bar; 13px captions do not. `.placeholder-cerulean`, `.filter-button-active` and `.group-title` therefore use `--on-light` (5.07:1), not white.
+3. **Cerulean *as text* on the slate ground is 3.79:1** — large text only. `.faq-question` is the one place it appears, at `--fs-h3`/700, which clears the bar.
+4. **Blush never carries text.** Blush on slate is 5.6:1 and fine as a shape; `--on-light` on blush is 7.4:1 and fine as text. The footer column titles use blush *on* slate.
+5. **`--black-75` and `--black-50` are dead on this ground** — 1.2:1 and 1.9:1. Only `--fg` and `--black-25` are safe for text on slate.
 
-Moving the ground from off-white to white *raised* every text ratio — nothing needed re-fixing. Measured in the browser after the change: `--ink` 16.3:1, `--grey` 10.4:1. The cerulean numbers are unchanged, because neither the fill nor the label colour moved, so the 19px/700 button lock still applies exactly as before.
+Measured in the browser across all six pages after the flip: **zero elements below their AA threshold.**
 
-**One affordance died in the collapse and was removed rather than left as dead code.** `.form-input` / `.form-select` used to rest on the off-white ground and lift to white on focus. With the two neutrals converged that swap became a no-op. Focus is carried by the 3px cerulean ring in the reset, which is both stronger than a fill change and already a brand colour.
+### What the flip broke, and what it did not
+
+Three things did not invert mechanically and were handled deliberately:
+
+- **The CTA band and footer** used to earn emphasis by *being* deep-slate on a light page. On an all-slate page that dissolves. The CTA band therefore **inverts to white** — the single light block on a dark site, which is the strongest call to action the layout can make. The footer stays slate and gains a 2px top rule. `.btn-paper` follows the band: it was a light button on a dark band, and is now a dark button on a light one.
+- **`.service-tile-slate` flips to a white fill**, because a slate tile on a slate ground is an empty outline and the grid needs four accented tiles out of eight.
+- **The duotone inks are pinned to literals.** They are photographic values, not page colours — the highlight ink must stay light and the shadow ink dark whatever the ground does. They were picking up `--ground` / `--fg` by name, which inverted them and broke the photograph. Pinning them means a future theme change cannot silently invert a photo again.
+
+`.btn-slate` was deleted. It was a deep-slate fill, which on a deep-slate ground is an invisible button, and grep across all six pages confirmed it was never used.
+
+**Form fields have no fill change on focus.** They used to rest on an off-white ground and lift to white; that became a no-op when the neutrals converged, and it is not revivable on a dark ground either. Focus is carried by the 3px cerulean ring in the reset, which is both stronger than a fill change and already a brand colour.
 
 Verified against the rendered page: all text passes AA, all tap targets are ≥24px, heading order runs H1 → H2 → H3 with no skips.
 
@@ -102,7 +117,7 @@ The eyebrow is `.eyebrow` + a `.eyebrow-marker` square:
 <p class="eyebrow"><span class="eyebrow-marker"></span>What can we do?</p>
 ```
 
-The reference renders this as a rounded pill. A pill would break the zero-radius rule this system runs on, so the chip is a 9px solid square instead — cerulean on white, blush on deep-slate (`.eyebrow-marker-blush`).
+The reference renders this as a rounded pill. A pill would break the zero-radius rule this system runs on, so the chip is a 9px solid square instead — cerulean on the slate ground, and cerulean again inside the inverted CTA band, where `.eyebrow-marker-blush` is overridden because blush on white is close to 1:1.
 
 ### The duotone photo system
 
@@ -125,9 +140,11 @@ Three stacked layers, no images pre-processed in Photoshop — swap the source f
 
 | Class | Shadow | Highlight | Used on |
 |---|---|---|---|
-| `.photo-duo-cerulean` | cerulean | paper | Hero arch |
+| `.photo-duo-cerulean` | cerulean | white | Hero arch |
 | `.photo-duo-blush` | deep slate | blush | CTA circle |
-| `.photo-duo-slate` | ink | cerulean wash | spare |
+| `.photo-duo-slate` | `#231F20` | `#E5F4FA` | spare |
+
+**These are photographic values, not page colours, so they do not follow the theme.** The highlight ink has to stay light and the shadow ink dark whatever the ground is. Two of them were reading `--ground` / `--fg` by name, which inverted them at the dark-theme flip and turned the plate inside out. They are pinned to literals now precisely so a future theme change cannot silently invert a photograph.
 | `.photo-mono` | — | — | grayscale only, for the logo wall |
 
 **Geometric cuts:** `.photo-circle` · `.photo-arch` · `.photo-quarter` · `.photo-square`.
@@ -238,9 +255,14 @@ Every module guards on element presence, so one file serves every page.
 - `amigos360-full-logo-{cerulean,deep-slate,blush,colour,reverse-white}.svg` (+ `.png`)
 - `amigos360-wordmark-{...}.svg`
 - `amigos360-owl-{...}.svg` — owl mark alone, derived by re-`viewBox`ing the full lockup to `432 -4 154 184`
-- `amigos360-owl-wash.svg` — owl in `#DCEDF6`, the hero's low-emphasis bleed shape
+- `amigos360-owl-wash.svg` — owl in `#DCEDF6`, the light build's low-emphasis bleed shape. Unused now, kept for reference
+- `amigos360-owl-wash-dark.svg` — the same owl in `#24406E`, the hero's bleed shape on the slate ground
 
-The colour lockup contains white shapes (`.cls-8`) that are **knockouts** — they read as the ground showing through, not as missing artwork. Only place it on a light ground. On deep-slate or cerulean, use reverse-white instead.
+On the light build the pale owl was a 1.20:1 whisper against white. Left alone on slate it measures **10.2:1** and dominates the hero, so the dark counterpart was cut to `#24406E` — **1.18:1** on the ground, matching the original's weight almost exactly.
+
+**Every mark on the site is now reverse-white**, and that is mandatory rather than stylistic. The colour lockup contains white shapes (`.cls-8`) that are **knockouts**: they read as the ground showing through, so on a dark ground the lockup renders as damaged artwork. §1.5 shows reverse-white on deep-slate for exactly this reason.
+
+The favicon is the one exception and stays full-colour — it sits in a browser tab, not on the page ground, so §1.4's "primary colour version whenever possible" still applies there.
 
 ### Minimum sizes — guide §1.3
 
@@ -254,7 +276,7 @@ The guide sets a **200px digital floor for the full lockup** and **150px for the
 
 All three `<img>` live in `.navbar-brand` and CSS shows exactly one — the same way a Webflow build would express it. All three are `alt=""`; the link itself carries the accessible name via `aria-label`.
 
-Footer uses reverse-white at 220px on deep-slate (already above the floor). The sign-in card uses the **colour wordmark** at 168px — the lockup at its old 168px was under the 200px floor.
+Footer uses reverse-white at 220px (already above the floor). The sign-in card uses the reverse-white **wordmark** at 168px — the lockup at its old 168px was under the 200px floor.
 
 **Before this pass every navbar logo was undersized** — 190 / 164 / 142px against a 200px floor.
 
@@ -284,7 +306,9 @@ Footer uses reverse-white at 220px on deep-slate (already above the floor). The 
 **Brand** — raised by the v2 guidelines pass, all need the client
 - [ ] Approved favicon artwork (§1.4). Not in the repo; the derived owl is a stand-in
 - [ ] Official owl symbol file — the current ones were manually re-`viewBox`ed, which §1.6 lists as a don't
-- [ ] Sign off `--cerulean-wash` / `--blush-wash` — tints of brand colours, but not in §2.1
+- [ ] Sign off `--cerulean-deep` `#174772` / `--blush-deep` `#43466A` — brand colours mixed into the ground at 18%, but not in §2.1
+- [ ] Sign off `amigos360-owl-wash-dark.svg` `#24406E` — a recolour of an already-derived owl, so it inherits both the §1.6 "unapproved colour variation" and "do not crop manually" problems
+- [ ] **Confirm the dark ground is wanted.** It is defensible — §1.5 sanctions reverse-white on deep-slate, and the guide's own cover uses it — but the guide's *layout* pages are predominantly white, and going dark-only means the full-colour lockup never appears anywhere on the site except the favicon
 - [ ] Web licences for Mont and Helvetica Now, if held (§3.1 / §3.2)
 - [ ] **Positioning mismatch.** The guide's brand story describes a *"creative platform… more than a marketplace"* connecting businesses with designers. The site copy sells a *design subscription service*. Both came from the client, and the copy is used verbatim, so this is theirs to reconcile — but it should not go live unresolved.
 
