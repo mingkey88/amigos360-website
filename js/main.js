@@ -36,6 +36,35 @@
     });
   }
 
+  /* ===== NAVBAR SCROLL STATE =====
+     Solid at the top of the page, translucent once scrolled past it.
+     Webflow equivalent: a "Page scrolled" trigger driving a class.
+
+     Throttled through requestAnimationFrame and registered passive — a scroll
+     handler that writes to the DOM on every event is the classic way to make a
+     sticky bar stutter, and passive:true tells the browser it never needs to
+     wait on this listener before scrolling. */
+  function initNavScroll() {
+    var navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+
+    var threshold = 24;   // past the bar's own height, so it does not flicker at rest
+    var queued = false;
+
+    function apply() {
+      navbar.classList.toggle('navbar-scrolled', window.pageYOffset > threshold);
+      queued = false;
+    }
+
+    window.addEventListener('scroll', function () {
+      if (queued) return;
+      queued = true;
+      window.requestAnimationFrame(apply);
+    }, { passive: true });
+
+    apply();   // a reload part-way down the page must not start solid
+  }
+
   /* ===== FAQ ACCORDION — one open at a time =====
      Webflow equivalent: Dropdown, or an Interaction on click. */
   function initAccordion() {
@@ -285,6 +314,7 @@
 
   function init() {
     initNavToggle();
+    initNavScroll();
     initAccordion();
     initPortfolioFilter();
     initReveal();

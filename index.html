@@ -80,21 +80,27 @@
             </div>
           </div>
 
-          <!-- Signature element: the 360 dial. Four quadrants = one full turn,
-               echoing both the owl mark's geometry and the name. It reappears
-               at quarter-turn increments in "How we work" and again in the CTA band. -->
-          <!-- Photomontage: flat geometry + one duotone photographic cut.
-               TODO: swap the placeholder for real Amigos photography — the
-               duotone treatment is applied in CSS, so any image inherits it. -->
+          <!-- The owl mark, full colour, on a white arch.
+
+               THE ARCH IS LOAD-BEARING, not decoration. The owl artwork is
+               roughly 40% Deep Slate (#1C355E), which is this page's ground —
+               placed bare on slate it loses its right ear, part of the brow
+               and most of the body silhouette. It needs a light ground under
+               it, which is also what the brand guide does on its own dark
+               divider pages: colour owl inside a white shape, never directly
+               on the navy.
+
+               The arch is the cut the duotone photo used to occupy, so the
+               shape vocabulary is unchanged; the slot just holds the brand
+               mark now instead of a placeholder photograph.
+
+               alt="" and aria-hidden: the mark is decorative here. The page
+               already names the brand in the navbar and the h1. -->
           <div class="hero-figure reveal">
-            <img class="hero-owl" src="assets/amigos360-owl-wash-dark.svg" alt="" aria-hidden="true">
-            <div class="hero-dial" aria-hidden="true"></div>
-            <div class="hero-photo photo photo-duo-cerulean photo-arch">
-              <img class="photo-img" src="assets/photo-placeholder-portrait.jpg"
-                   alt="Placeholder for Amigos studio photography" loading="lazy" width="1200" height="1500">
-              <span class="photo-tint" aria-hidden="true"></span>
+            <div class="hero-owl-panel" aria-hidden="true">
+              <img class="hero-owl-mark" src="assets/amigos360-owl-colour.svg" alt=""
+                   width="154" height="184">
             </div>
-            <div class="hero-triangle" aria-hidden="true"></div>
           </div>
 
         </div>

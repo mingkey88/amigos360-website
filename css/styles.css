@@ -296,6 +296,24 @@ summary:focus-visible {
   z-index: 100;
   background-color: var(--white);
   border-bottom: var(--rule-strong-on-light);
+  transition: background-color 0.2s var(--ease);
+}
+
+/* Scrolled state — added by initNavScroll() past 24px.
+   Webflow equivalent: a "Page scrolled" interaction driving a class.
+
+   92%, not lower, because of the lockup. Its white shapes are opaque
+   knockouts: as the bar tints toward the content behind it, those shapes stay
+   pure white and start reading as lighter patches inside the mark. At 92% over
+   slate the bar lands around #F2F3F5 and the delta is imperceptible; at 80% it
+   is not. The blur does the visible work here, not the alpha.
+
+   Ink on the tinted bar still measures ~14:1, so nothing about legibility
+   changes — this is purely about the mark sitting flush. */
+.navbar-scrolled {
+  background-color: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 
 .navbar-inner {
@@ -671,61 +689,40 @@ summary:focus-visible {
   margin-top: var(--s-xl);
 }
 
-/* Hero composition — the signature 360 dial */
+/* Hero composition — the owl mark, full colour, on a white arch.
+   Replaces the previous dial + duotone photo + triangle montage.
+
+   THE ARCH IS NOT DECORATION. The owl artwork is roughly 40% Deep Slate
+   (#1C355E), which is this page's ground — placed bare on slate it loses its
+   right ear, part of the brow and most of the body silhouette. It needs a
+   light ground under it, which is also exactly what the brand guide does on
+   its own dark divider pages: colour owl inside a white shape, never directly
+   on the navy.
+
+   The arch cut is the one the duotone photo used to occupy, so the shape
+   vocabulary is unchanged — the slot just holds the brand mark now instead of
+   a placeholder photograph. */
 .hero-figure {
   position: relative;
-  aspect-ratio: 1;
   width: 100%;
+  aspect-ratio: 5 / 6;
 }
 
-/* Width + aspect-ratio, never four unequal insets — insets made this an ellipse. */
-.hero-dial {
+.hero-owl-panel {
   position: absolute;
-  top: 4%;
-  left: 4%;
-  width: 82%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: var(--border-w) solid var(--fg);
-  background-image: conic-gradient(
-    var(--cerulean)   0deg  90deg,
-    var(--white)      90deg 180deg,
-    var(--blush)      180deg 270deg,
-    var(--ground)      270deg 360deg
-  );
+  inset: 0;
+  background-color: var(--white);
+  border-radius: 999px 999px 0 0;   /* same cut as .photo-arch */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16% 12% 9%;
+  overflow: hidden;
 }
 
-/* The montage element: a duotone photo cut to an arch, overlapping the dial.
-   Arch, circle, triangle — three primitives, one of them photographic. */
-.hero-photo {
-  position: absolute;
-  left: -6%;
-  bottom: -4%;
-  width: 42%;
-  aspect-ratio: 3 / 4;
-  border: var(--border-w) solid var(--fg);
-  z-index: 2;
-}
-
-.hero-triangle {
-  position: absolute;
-  right: 12%;
-  top: 4%;
-  width: 0;
-  height: 0;
-  border-left: 46px solid transparent;
-  border-right: 46px solid transparent;
-  border-bottom: 80px solid var(--white);
-}
-
-/* Owl at low emphasis, bleeding off the hero's right edge (clipped by
-   .section-hero overflow). Flat pale tint rather than opacity — Bauhaus
-   colour blocking stays honest, and it never competes with the dial. */
-.hero-owl {
-  position: absolute;
-  right: -26%;
-  bottom: -6%;
-  width: 76%;
+.hero-owl-mark {
+  width: 100%;
+  height: auto;
 }
 
 /* ===== SOCIAL PROOF ===== */
@@ -1013,8 +1010,6 @@ summary:focus-visible {
   .hero-inner { grid-template-columns: 1fr; gap: var(--s-xl); }
   .hero-figure { max-width: 440px; }
   .hero-heading { max-width: 18ch; }
-  /* Pull the photo arch back in frame on a narrow canvas. */
-  .hero-photo { left: 0; width: 40%; }
 
   .services-grid { grid-template-columns: repeat(2, 1fr); }
   .process-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1051,7 +1046,6 @@ summary:focus-visible {
   .navbar-symbol   { display: block; }
 
   .hero-actions { flex-direction: column; align-items: stretch; }
-  .hero-triangle { border-left-width: 30px; border-right-width: 30px; border-bottom-width: 54px; }
 
   .services-grid { grid-template-columns: 1fr; }
   .process-grid { grid-template-columns: 1fr; }

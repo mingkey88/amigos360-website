@@ -2,7 +2,7 @@
 
 Static, dependency-free mockup. Open `index.html` directly in a browser — no build step, no npm, no server required.
 
-**Status:** all six pages built — `index`, `portfolio`, `pricing`, `faq`, `book-a-call`, `sign-in`. Content placeholders remain (see TODO at the bottom).
+**Status:** seven pages built — `index`, `home-full` (a long-form alternative homepage), `portfolio`, `pricing`, `faq`, `book-a-call`, `sign-in`. Content placeholders remain (see TODO at the bottom).
 
 ---
 
@@ -22,11 +22,21 @@ The Bauhaus direction is not a stylistic preference layered on top of the brand;
 
 | Where | What it does |
 |---|---|
-| Hero | Full four-quadrant dial, the composition's anchor |
+| Hero | ~~Full four-quadrant dial~~ — **removed.** The hero now carries the owl mark instead; see *Hero composition* below |
 | How we work | Each step closes another 90° — steps 1–4 fill 90° → 180° → 270° → 360° |
 | CTA band | A closed dial, ending the loop the page opened with |
 
-Photography enters the montage at two points on the homepage — a duotone **arch** overlapping the hero dial, and a duotone **circle** overlapping the CTA dial. Flat geometry and photographic cut always overlap; they never sit side by side in separate boxes.
+Photography now enters the montage at **one** point on the homepages — a duotone **circle** overlapping the CTA dial. The hero's duotone arch was replaced by the owl mark. Where flat geometry and a photographic cut do appear together, they overlap; they never sit side by side in separate boxes.
+
+### Hero composition
+
+Both homepages open on the **full-colour owl inside a white arch**. It replaced the previous dial + duotone photo + triangle montage.
+
+**The arch is load-bearing, not decoration.** The owl artwork is roughly 40% Deep Slate `#1C355E`, which is the page ground — placed bare on slate it loses its right ear, part of the brow and most of the body silhouette. This was checked by rendering all four options side by side, not assumed. It needs a light ground beneath it, which is also exactly what the brand guide does on its own dark divider pages: colour owl inside a white shape, never directly on the navy.
+
+The arch is the cut the duotone photo used to occupy, so the shape vocabulary is unchanged — the slot just holds the brand mark now instead of a placeholder photograph. It is a third light island, after the navbar and the CTA band.
+
+**Cost, stated plainly:** the 360 dial no longer appears in the hero. It still recurs in the process steps and the CTA band, so the motif survives, but it has lost the composition that introduced it.
 
 The numbering in "How we work" is load-bearing: the plan genuinely is a sequence, and the dial makes the sequence's completion visible. Reuse the motif on the remaining pages; don't add a second competing device.
 
@@ -252,8 +262,7 @@ Fluid first, breakpoints only where the layout genuinely has to change shape:
 
 Two deliberate behaviours that look like bugs in an automated audit:
 
-- `.hero-owl` extends past the right viewport edge at every width. That is the intended bleed; `.section-hero` has `overflow: hidden` and clips it, so it never creates a scrollbar. Keep the `overflow: hidden` when rebuilding.
-- `.hero-quadrant` bleeds past the container at desktop but is pulled back to `left: -2%` below 992, where a large negative offset reads as a stray sliver rather than a composed bleed.
+- `.section-hero` keeps `overflow: hidden`. Nothing bleeds past the viewport edge any more now that the pale owl is gone, but the rule is cheap insurance if a bleeding element returns.
 
 Known trade-off, not fixed: the sticky navbar is 88px tall, which is a noticeable share of a landscape phone's ~390px viewport height. A height-based media query would fix it but Webflow can't express one in the designer, so it is left alone for rebuild fidelity.
 
@@ -273,7 +282,11 @@ One system, extended from the existing tokens — no parallel motion stack.
   The earlier `nth-child` version looked right on a short grid and wrong on a long one — the 16th portfolio tile sat 2,000px down, arrived alone, and still waited out a fixed 360ms before moving. That reads as lag, not stagger. There is no `.reveal-stagger` class any more; grouping is implicit.
 - **The process dials sweep a quarter turn** as each step arrives — rotating the disc drags its filled wedge, so the arc reads as being drawn. The dial's delay is mirrored from its step in JS, so it stays on the same beat however the steps batch at a given breakpoint. This is the one piece of motion that *explains* something rather than softening an entrance.
 
-**Deliberately not animated:** the portfolio filter (clicked repeatedly — it snaps, and tiles keep `reveal-visible` so re-showing never re-animates), nav, and footer.
+**Deliberately not animated:** the portfolio filter (clicked repeatedly — it snaps, and tiles keep `reveal-visible` so re-showing never re-animates) and the footer.
+
+**The navbar has one state change**, added later: it goes translucent once scrolled past 24px. `initNavScroll()` toggles `.navbar-scrolled`, throttled through `requestAnimationFrame` and registered `passive: true` — a scroll handler that writes to the DOM on every event is the classic way to make a sticky bar stutter.
+
+**92% is not an arbitrary alpha.** The full-colour lockup's white shapes are opaque knockouts. As the bar tints toward the content behind it, those shapes stay pure white and begin reading as lighter patches inside the mark. At 92% over slate the bar lands near `#F2F3F5` and the delta is imperceptible; at 80% it is not. The `blur(12px)` does the visible work, not the alpha. Ink on the tinted bar still measures ~14:1, so legibility never enters into it.
 
 **Button hover lift is gated** behind `@media (hover: hover) and (pointer: fine)` — on touch, a tap fires `:hover` and leaves the button stuck in its lifted state. `:active` stays ungated as real press feedback.
 
@@ -284,6 +297,7 @@ One system, extended from the existing tokens — no parallel motion stack.
 | `js/main.js` | Webflow equivalent |
 |---|---|
 | `initNavToggle` | Native Navbar component |
+| `initNavScroll` | "Page scrolled" trigger driving a class |
 | `initAccordion` | Dropdown, or click Interaction (one open at a time) |
 | `initPortfolioFilter` | CMS Collection List + Tabs, or a filter Interaction |
 | `initReveal` | "Scroll into view" page-trigger Interaction (fade + move only) |
@@ -303,7 +317,7 @@ Every module guards on element presence, so one file serves every page.
 - `amigos360-wordmark-{...}.svg`
 - `amigos360-owl-{...}.svg` — owl mark alone, derived by re-`viewBox`ing the full lockup to `432 -4 154 184`
 - `amigos360-owl-wash.svg` — owl in `#DCEDF6`, the light build's low-emphasis bleed shape. Unused now, kept for reference
-- `amigos360-owl-wash-dark.svg` — the same owl in `#24406E`, the hero's bleed shape on the slate ground
+- `amigos360-owl-wash-dark.svg` — the same owl in `#24406E`. **Now unused** — it was the hero's pale bleed shape before the owl mark replaced the whole composition. Kept because it is the only dark-ground low-emphasis variant, and it costs 15KB
 
 On the light build the pale owl was a 1.20:1 whisper against white. Left alone on slate it measures **10.2:1** and dominates the hero, so the dark counterpart was cut to `#24406E` — **1.18:1** on the ground, matching the original's weight almost exactly.
 
@@ -344,7 +358,7 @@ Footer uses reverse-white at 220px (already above the floor). The sign-in card u
 ## TODO before this goes live
 
 **Content**
-- [ ] **Real photography.** `assets/photo-placeholder-*.jpg` are generated tonal stand-ins, not art. Drop real images in at the same paths and they inherit the duotone automatically — no CSS changes. Shoot or select for **strong tonal range**; a flat, low-contrast image turns to mush under duotone.
+- [ ] **Real photography.** `assets/photo-placeholder-*.jpg` are generated tonal stand-ins, not art. Only `-square` is still rendered (the CTA circle); `-portrait` fell out of use when the owl replaced the hero photo, and `-wide` was never placed. Drop real images in at the same paths and they inherit the duotone automatically — no CSS changes. Shoot or select for **strong tonal range**; a flat, low-contrast image turns to mush under duotone.
 - [ ] Ten real client logos to replace the `Client logo 01–10` slots in the social-proof grid
 - [ ] Pricing figures — all three tiers are `S$X,XXX/mo` placeholders
 - [ ] Confirm which features belong to Basic / Pro / Premium; the distribution in `pricing.html` is a guess and must be signed off
@@ -369,7 +383,7 @@ Footer uses reverse-white at 220px (already above the floor). The sign-in card u
 - [ ] Approved favicon artwork (§1.4). Not in the repo; the derived owl is a stand-in
 - [ ] Official owl symbol file — the current ones were manually re-`viewBox`ed, which §1.6 lists as a don't
 - [ ] Sign off `--cerulean-deep` `#174772` / `--blush-deep` `#43466A` — brand colours mixed into the ground at 18%, but not in §2.1
-- [ ] Sign off `amigos360-owl-wash-dark.svg` `#24406E` — a recolour of an already-derived owl, so it inherits both the §1.6 "unapproved colour variation" and "do not crop manually" problems
+- [ ] ~~Sign off `amigos360-owl-wash-dark.svg`~~ — no longer rendered anywhere, so this lapses unless the asset is reintroduced
 - [ ] **Confirm the dark ground is wanted.** It is defensible — §1.5 sanctions reverse-white on deep-slate, and the guide's own cover uses it — though the guide's *layout* pages are predominantly white. The §1.4 objection is now largely answered: the light navbar carries the full-colour lockup on every page, so the primary colour version is present throughout rather than confined to the favicon
 - [ ] Web licences for Mont and Helvetica Now, if held (§3.1 / §3.2)
 - [ ] **Positioning mismatch.** The guide's brand story describes a *"creative platform… more than a marketplace"* connecting businesses with designers. The site copy sells a *design subscription service*. Both came from the client, and the copy is used verbatim, so this is theirs to reconcile — but it should not go live unresolved.
