@@ -1602,3 +1602,362 @@ summary:focus-visible {
   .portfolio-tile-wide { grid-column: span 1; }
   .filter-button { flex: 1 1 auto; }
 }
+
+/* =========================================================================
+   LONG-FORM HOME (home-full.html)
+   Components modelled on the cyagen reference's section inventory, rendered
+   in this system's own language: flat blocks, zero radius, hard shadows,
+   construction left visible. Nothing here is a soft SaaS card.
+
+   Everything below is additive — index.html does not load any of it.
+   ========================================================================= */
+
+/* ----- Section head with a "see all" link ----- */
+.section-head-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-lg);
+  margin-bottom: var(--s-xl);
+}
+
+/* An arrow that shifts on hover rather than a underline that appears — the
+   motion is the affordance, and it moves along the reading direction. */
+.section-link {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-xs);
+  padding-block: 6px;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  border-bottom: 2px solid var(--cerulean);
+}
+.section-link-arrow { transition: transform 0.18s var(--ease); }
+@media (hover: hover) and (pointer: fine) {
+  .section-link:hover .section-link-arrow { transform: translateX(4px); }
+}
+
+/* ----- Hero trust strip ----- */
+.trust-strip {
+  display: flex;
+  align-items: center;
+  gap: var(--s-lg);
+  flex-wrap: wrap;
+  margin-top: var(--s-2xl);
+  padding-top: var(--s-lg);
+  border-top: var(--rule);
+}
+
+.trust-stat {
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  flex-shrink: 0;
+}
+
+.trust-logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-md);
+  flex: 1 1 320px;
+}
+
+.trust-slot {
+  flex: 1 1 96px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border: var(--rule);
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+/* ----- Benefits grid -----
+   Six claims, each lifted from an answer the client already supplied on the
+   FAQ page. Nothing here is invented copy — see the source note on each item
+   in the markup. */
+.section-benefits {
+  padding-block: var(--section-py);
+  border-bottom: var(--rule-strong);
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-md);
+}
+
+.benefit {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-md);
+  padding: var(--s-lg) var(--s-md);
+  border: var(--border-w) solid var(--fg);
+}
+
+/* The icon reuses .service-icon primitives, at a smaller size */
+.benefit-icon {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  background-color: var(--cerulean);
+}
+.benefit-icon-circle  { border-radius: 50%; }
+.benefit-icon-quarter { border-radius: 100% 0 0 0; }
+.benefit-icon-semi    { height: 18px; border-radius: 34px 34px 0 0; margin-top: 16px; }
+.benefit-icon-diamond { transform: rotate(45deg); width: 26px; height: 26px; margin: 4px; }
+.benefit-icon-bar     { height: 20px; margin-block: 7px; }
+.benefit-icon-tall    { width: 22px; }
+
+.benefit-title {
+  font-size: 1.1875rem;
+  font-weight: 700;
+  line-height: var(--lh-snug);
+}
+
+.benefit-body {
+  font-size: var(--fs-body-sm);
+  color: var(--fg-muted);
+}
+
+/* ----- Testimonials -----
+   One card visible at a time, stepped by hard square controls. Webflow
+   equivalent: the native Slider component.
+
+   Every field is a labelled placeholder. No quote, name, company or rating is
+   invented here: a plausible-looking fake review stops reading as a
+   placeholder the moment somebody screenshots it. */
+.section-testimonials {
+  padding-block: var(--section-py);
+  border-bottom: var(--rule-strong);
+}
+
+.testimonial-stage { position: relative; }
+
+.testimonial-card {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--s-xl);
+  padding: var(--s-lg);
+  border: var(--border-w) solid var(--fg);
+  box-shadow: var(--print-shadow);
+}
+
+.testimonial-figure {
+  aspect-ratio: 1;
+  border: var(--border-w) solid var(--fg);
+  background-color: var(--cerulean-deep);
+  display: flex;
+  align-items: flex-end;
+  padding: 12px;
+}
+
+.testimonial-quote {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+}
+
+.testimonial-attrib {
+  margin-top: var(--s-lg);
+  padding-top: var(--s-md);
+  border-top: var(--rule);
+}
+
+.testimonial-name {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.testimonial-role {
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-top: 4px;
+}
+
+/* Five UNFILLED squares plus an explicit label. Drawing five filled stars with
+   no review behind them would be publishing a rating the client has not
+   earned; an empty row reads unambiguously as "not yet supplied". */
+.testimonial-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--s-md);
+}
+
+.rating-slot {
+  width: 13px;
+  height: 13px;
+  border: 2px solid var(--fg-muted);
+}
+
+.rating-label {
+  margin-left: var(--s-xs);
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.testimonial-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--s-md);
+  margin-top: var(--s-lg);
+}
+
+.testimonial-arrow {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-w) solid var(--fg);
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: background-color 0.16s var(--ease), color 0.16s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .testimonial-arrow:hover { background-color: var(--fg); color: var(--on-light); }
+}
+
+.testimonial-count {
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--fg-muted);
+}
+
+/* ----- Plan preview (3 cards side by side) -----
+   .plan-cards is display:none until 768 on the pricing page. The preview needs
+   them visible at every width, so it opts out with its own modifier rather
+   than fighting that rule. */
+.plan-cards-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s-md);
+  align-items: start;
+}
+.plan-cards-preview .plan-card { margin-bottom: 0; }
+
+.plan-card-featured { box-shadow: 6px 6px 0 var(--cerulean); }
+
+/* ----- Email capture, inside the light CTA band -----
+   The form wraps the field, the button, the error and the terms checkbox —
+   everything that gates the submit belongs to the form element. Only the
+   success panel sits outside, because the form itself gets hidden on success. */
+.signup-form {
+  margin-top: var(--s-lg);
+  max-width: 34rem;
+}
+
+.signup-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-sm);
+}
+
+.signup-field { flex: 1 1 220px; }
+
+.signup-input {
+  width: 100%;
+  padding: 15px 14px;
+  border: var(--border-w) solid var(--on-light);
+  border-radius: 0;
+  background-color: var(--white);
+  font-family: var(--font-body);
+  font-size: var(--fs-body-sm);
+  color: var(--on-light);
+}
+.signup-input::placeholder { color: var(--black-50); }
+.signup-input-error { border-color: #C0392B; }
+
+.signup-error {
+  margin-top: var(--s-xs);
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  color: #C0392B;
+}
+
+.signup-terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: var(--s-md);
+  max-width: 44ch;
+  font-size: var(--fs-label);
+  color: var(--black-75);
+}
+
+/* 24px, not 20 — WCAG 2.5.8 wants a 24x24 minimum and a standalone checkbox
+   gets no exemption from it. (The Terms / Privacy links beside it are inline
+   within a sentence, which 2.5.8 does exempt.) */
+.signup-checkbox {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  accent-color: var(--cerulean);
+}
+
+.signup-success {
+  margin-top: var(--s-lg);
+  padding: var(--s-md);
+  border: var(--border-w) solid var(--on-light);
+  background-color: var(--white);
+  box-shadow: 4px 4px 0 var(--cerulean);
+  max-width: 34rem;
+}
+
+.signup-success-title {
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  font-weight: 700;
+  margin-bottom: var(--s-xs);
+}
+
+.signup-success-body { font-size: var(--fs-body-sm); color: var(--black-75); }
+
+/* ----- Long-form home: responsive ----- */
+@media screen and (max-width: 992px) {
+  .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+  .plan-cards-preview { grid-template-columns: 1fr; }
+  .testimonial-card { grid-template-columns: 140px 1fr; gap: var(--s-lg); }
+}
+
+@media screen and (max-width: 768px) {
+  .section-head-row { flex-direction: column; align-items: flex-start; gap: var(--s-md); }
+
+  /* The portrait slot stops earning its column at this width */
+  .testimonial-card { grid-template-columns: 1fr; }
+  .testimonial-figure { max-width: 140px; }
+
+  .trust-strip { gap: var(--s-md); }
+}
+
+@media screen and (max-width: 480px) {
+  .benefits-grid { grid-template-columns: 1fr; }
+  .signup-field { flex: 1 1 100%; }
+  .testimonial-card { padding: var(--s-md); }
+}

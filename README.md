@@ -195,6 +195,32 @@ Inter was the original stand-in and was replaced deliberately: it reads as gener
 | `faq.html` | 8-item accordion, one open at a time, plus `FAQPage` JSON-LD |
 | `book-a-call.html` | Two-column layout, five-field form with client-side validation, Calendly embed slot |
 | `sign-in.html` | Centred card, geometric accent behind. Mockup only — no auth |
+| `home-full.html` | **Long-form home — an alternative to `index.html`, not a replacement.** See below |
+
+### `home-full.html` — the long-form alternative
+
+Both homepages are deployed. `index.html` is unchanged; this one exists so the client can be shown the two side by side.
+
+Its section inventory follows the [cyagen](https://cyagen.webflow.io/) reference — hero with dual CTA and a trust strip, services, process, work preview, plan preview, testimonials, benefits, FAQ preview, CTA with email capture — but it is rendered in this system's own language. Flat blocks, zero radius, hard shadows, construction visible. **Not** the reference's soft-SaaS card styling, which was ruled out at the direction stage.
+
+**Copy policy — read before editing this page.** Cyagen's own marketing text is *not* reproduced here. It is a competitor's copyrighted copy and this URL is public. Every string is one of three things:
+
+1. Client-supplied copy, verbatim — hero, services, process, FAQ, CTA
+2. Client-supplied copy condensed to fit a new slot, marked `TODO` where so
+3. A labelled placeholder, in the repo's existing convention
+
+**The benefits grid is derived, not invented.** All six claims are lifted from answers the client already supplied on `faq.html`, with the source FAQ noted per item in the markup. That matters because they are commercial commitments — turnaround times, cancellation terms, who does the work — not marketing adjectives:
+
+| Benefit | Source |
+|---|---|
+| No hidden fees | *Are there any hidden fees?* |
+| Unlimited requests | *What does "unlimited designs" mean?* |
+| 1–2 day turnaround | *How fast can I get my designs?* |
+| Cancel or pause anytime | *Can I cancel anytime?* + *Can I pause my subscription?* |
+| Vetted professional designers | *Who works on my designs?* |
+| White-label ready | *Can agencies white-label Amigos?* |
+
+**Testimonials are entirely placeholder, deliberately.** No quote, name, company or rating is invented. A plausible-looking fake review stops reading as a placeholder the moment somebody screenshots the page, and this URL is public. The rating row is five **unfilled** squares plus a "Rating pending" label for the same reason — five filled stars would be publishing a score nobody has given.
 
 ## Webflow rebuild notes
 
@@ -262,6 +288,8 @@ One system, extended from the existing tokens — no parallel motion stack.
 | `initPortfolioFilter` | CMS Collection List + Tabs, or a filter Interaction |
 | `initReveal` | "Scroll into view" page-trigger Interaction (fade + move only) |
 | `initBookingForm` | Native Form block with Success / Error states |
+| `initTestimonialSlider` | Native Slider component |
+| `initSignupForm` | Native Form block with Success / Error states |
 
 Every module guards on element presence, so one file serves every page.
 
@@ -328,6 +356,14 @@ Footer uses reverse-white at 220px (already above the floor). The sign-in card u
 
 **Build**
 - [ ] Same-day turnaround asterisk on the pricing page needs its footnote text
+
+**`home-full.html`** — only if this version is the one taken forward
+- [ ] Four real testimonials, with permission to attribute, plus portrait images. Every field is a placeholder today
+- [ ] Whether ratings are wanted at all. If so they need real review data — the row is deliberately unfilled
+- [ ] Client count for the hero trust strip (`+XXX businesses` placeholder)
+- [ ] Sign-off on two headings that are mine: *"What clients say about working with Amigos"* and *"What you get on every plan"*
+- [ ] Sign-off on the four benefit lines condensed from longer FAQ answers. The claims are the client's own words; only the condensation needs approval
+- [ ] A real endpoint for the email capture — it logs to console and swaps in the success state, same as the booking form
 
 **Brand** — raised by the v2 guidelines pass, all need the client
 - [ ] Approved favicon artwork (§1.4). Not in the repo; the derived owl is a stand-in

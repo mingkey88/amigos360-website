@@ -202,12 +202,95 @@
     });
   }
 
+  /* ===== TESTIMONIAL SLIDER — one card at a time =====
+     Webflow equivalent: the native Slider component.
+
+     Hides by the [hidden] attribute rather than by class, which the reset
+     enforces with display:none !important — the same fix the portfolio filter
+     needed. Hidden cards leave the accessibility tree entirely, so a screen
+     reader is never offered four overlapping quotes. */
+  function initTestimonialSlider() {
+    var stage = document.querySelector('.testimonial-stage');
+    if (!stage) return;
+
+    var cards = stage.querySelectorAll('.testimonial-card');
+    var arrows = document.querySelectorAll('.testimonial-arrow');
+    var count = document.querySelector('.testimonial-count');
+    if (cards.length < 2 || !arrows.length) return;
+
+    var index = 0;
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+
+    function show(next) {
+      // Wrap in both directions so neither arrow is ever a dead control.
+      index = (next + cards.length) % cards.length;
+      Array.prototype.forEach.call(cards, function (card, i) {
+        card.hidden = i !== index;
+      });
+      if (count) count.textContent = pad(index + 1) + ' / ' + pad(cards.length);
+    }
+
+    Array.prototype.forEach.call(arrows, function (arrow) {
+      arrow.addEventListener('click', function () {
+        show(index + Number(arrow.getAttribute('data-step') || 1));
+      });
+    });
+
+    show(0);
+  }
+
+  /* ===== EMAIL CAPTURE — client-side validation stub =====
+     No backend, same as the booking form. Kept separate rather than folded
+     into initBookingForm because the two have different fields, different
+     success copy, and only ever appear on different pages.
+     Webflow equivalent: native Form block + Success / Error states. */
+  function initSignupForm() {
+    var form = document.querySelector('.signup-form');
+    if (!form) return;
+
+    var success = document.querySelector('.signup-success');
+    var input = form.querySelector('.signup-input');
+    var error = document.querySelector('.signup-error');
+    var terms = form.querySelector('.signup-checkbox');
+
+    form.setAttribute('novalidate', 'novalidate');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      var emailOk = input.checkValidity();
+      var termsOk = !terms || terms.checked;
+
+      input.classList.toggle('signup-input-error', !emailOk);
+      input.setAttribute('aria-invalid', String(!emailOk));
+
+      if (error) {
+        error.hidden = emailOk && termsOk;
+        if (!emailOk) error.textContent = 'Enter a valid email address.';
+        else if (!termsOk) error.textContent = 'Please accept the terms to continue.';
+      }
+
+      if (!emailOk) { input.focus(); return; }
+      if (!termsOk) { terms.focus(); return; }
+
+      console.log('Trial signup request:', { email: input.value });
+
+      form.hidden = true;
+      if (success) {
+        success.hidden = false;
+        success.focus();
+      }
+    });
+  }
+
   function init() {
     initNavToggle();
     initAccordion();
     initPortfolioFilter();
     initReveal();
     initBookingForm();
+    initTestimonialSlider();
+    initSignupForm();
   }
 
   if (document.readyState === 'loading') {
