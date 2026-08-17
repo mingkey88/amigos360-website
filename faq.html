@@ -11,9 +11,12 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" href="assets/amigos360-owl-cerulean.svg" type="image/svg+xml">
+  <!-- Guide §1.4: the primary colour version is used wherever possible.
+       TODO: this owl was derived by re-viewBox-ing the lockup, which §1.6
+       lists as a don't. Request the approved favicon artwork from the client. -->
+  <link rel="icon" href="assets/amigos360-owl-colour.svg" type="image/svg+xml">
   <!-- FAQPage structured data — this page targets high-intent search -->
   <script type="application/ld+json">
 {
@@ -101,7 +104,14 @@
     <div class="container">
       <div class="navbar-inner">
         <a class="navbar-brand" href="index.html" aria-label="Amigos360 home">
-          <img class="navbar-logo" src="assets/amigos360-full-logo-colour.svg" alt="Amigos360">
+          <!-- Guide §1.3: the lockup has a 200px digital floor and the wordmark
+               a 150px one, so rather than undersize the lockup on a narrow
+               canvas we step down to the wordmark and then to the symbol. CSS
+               shows exactly one at a time. All three are alt="" because the
+               link itself carries the accessible name. -->
+          <img class="navbar-logo" src="assets/amigos360-full-logo-colour.svg" alt="">
+          <img class="navbar-wordmark" src="assets/amigos360-wordmark-colour.svg" alt="">
+          <img class="navbar-symbol" src="assets/amigos360-owl-colour.svg" alt="">
         </a>
 
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">

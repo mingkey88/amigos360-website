@@ -12,7 +12,9 @@ Static, dependency-free mockup. Open `index.html` directly in a browser — no b
 
 That last part is the Moholy-Nagy / Lissitzky / Rodchenko Constructivist language: a grayscale plate printed in two inks, cropped to a circle or arch, overlapped with flat colour. It is what makes the direction read as 2D and avant-garde rather than merely clean, and it is period-correct — Moholy-Nagy was a Bauhaus master and photomontage was Bauhaus practice, not a modern graft.
 
-**On the Halden Miller reference:** its photography and its IBM Plex Mono micro-labels were adopted. Its actual aesthetic — cream ground, editorial serif display, rounded pills, soft full-colour photography — was **not**, because it contradicts the Bauhaus brief and fights the logo's stencil-cut geometric letterforms. Do not let the build drift back toward it. Photography stays duotone and geometrically cut; never full-colour, never in a soft rounded frame.
+**On the Halden Miller reference:** its photographic treatment was adopted. Its actual aesthetic — cream ground, editorial serif display, rounded pills, soft full-colour photography — was **not**, because it contradicts the Bauhaus brief and fights the logo's stencil-cut geometric letterforms. Do not let the build drift back toward it. Photography stays duotone and geometrically cut; never full-colour, never in a soft rounded frame. (Its IBM Plex Mono micro-labels were adopted for a while and have since been reverted — see *Two faces, and only two*.)
+
+The Bauhaus direction is not a stylistic preference layered on top of the brand; it is the brand's own stated basis. Guidelines v2: *"Inspired by the principles of Bauhaus art direction, the brand identity embraces simplicity, functionality, and geometric precision."* Flat colour, zero radius and visible construction are the house style **because the guide says so**, which is worth knowing before anyone proposes softening them toward a competitor's look.
 
 **Signature element — the 360 dial.** A circle split into four quadrants recurs as the site's structural motif:
 
@@ -30,21 +32,32 @@ The numbering in "How we work" is load-bearing: the plan genuinely is a sequence
 
 ## Colour tokens
 
-Sampled from the supplied logo SVGs, **not** from the approximations in the brief. Differences are listed so they can be corrected in any other brand collateral.
+Aligned to **Brand Guidelines v2 §2.1**. The three brand colours were already exact; the neutrals were not, and were corrected.
 
-| Token | Value | Brief said | Role |
+| Token | Value | Guide §2.1 | Role |
 |---|---|---|---|
-| `--cerulean` | `#009ACF` | `#1E9CD8` | Primary brand blue |
-| `--deep-slate` | `#1C355E` | `#21365C` | Headings, footer, dark ground |
-| `--blush` | `#F7929E` | `#F29CA4` | Accent — shapes and fills only |
-| `--ink` | `#231F20` | `#111111` | Body text, borders, print shadow |
-| `--grey` | `#606161` | — | Muted body text (5.7:1 on paper) |
-| `--paper` | `#F7F5F0` | same | Page ground |
-| `--white` | `#FFFFFF` | same | Card ground |
+| `--cerulean` | `#009ACF` | PANTONE 6121 C | Primary brand blue |
+| `--deep-slate` | `#1C355E` | PANTONE 534 C | Headings, footer, dark ground |
+| `--blush` | `#F7929E` | PANTONE 6043 C | Accent — shapes and fills only |
+| `--white` | `#FFFFFF` | 100% White | Page and card ground |
+| `--paper` | `#FFFFFF` | — | Alias of `--white`; see below |
+| `--black-75` | `#404040` | 75% Black | Muted body text — 10.4:1 on white |
+| `--black-50` | `#808080` | 50% Black | 3.95:1 — large text and non-text only |
+| `--black-25` | `#BFBFBF` | 25% Black | 1.84:1 — rules and hairlines, never text |
+| `--grey` | → `--black-75` | — | Every existing muted-text call site |
+| `--ink` | `#231F20` | — | Body text, borders, print shadow |
 | `--cerulean-wash` | `#E5F4FA` | — | Flat tint, never behind text |
 | `--blush-wash` | `#FDEBED` | — | Flat tint, never behind text |
 
-Ratio in use is roughly paper/white 60% · deep-slate 20% · cerulean 15% · blush 5%.
+**The ground is now white.** It was an off-white `#F7F5F0`, which is a warm cream and has no basis in §2.1 — the guide's neutral system is 100% White plus a black ramp, with nothing warm in it. `--paper` is kept as an alias so the ~9 call sites still read "page ground" rather than "card fill", and so a future approved tint has one place to land.
+
+This collapsed the paper/white pair that white cards used to sit on. It turned out to be safe: **every** white card already carries a 2px ink border and most carry a hard print shadow, so separation was being done by visible construction, not by fill contrast. That is the more Bauhaus mechanism of the two anyway. The one thing it did break is noted under Contrast rules below.
+
+**`--ink` deliberately stays off the black ramp.** `#231F20` is `cls-5` in the official logo artwork, used 11× in the lockup, so it is brand colour rather than an invented neutral. It measures 16.3:1 on white; pure `#000` would be 21:1, which is harsh at an 18px body size. If strict ramp compliance is ever required, it is a one-line change.
+
+**The two washes are not in the guide.** They are tints of approved brand colours used as flat fills only, never behind text. Flagged for client sign-off.
+
+Ratio in use is roughly white 60% · deep-slate 20% · cerulean 15% · blush 5%.
 
 ### Contrast rules — read before adding any component
 
@@ -52,9 +65,14 @@ Two constraints fall out of the brand palette. Both are already enforced in `sty
 
 1. **White on cerulean measures 3.22:1.** That clears AA for *large* text only. Every cerulean button is therefore locked to **700 weight at 19px minimum** (`.btn` sets `font-size: 1.1875rem`), plus a 2px ink border that carries the edge. **Never shrink a cerulean button's label below 19px** and never put small text on a cerulean fill.
 2. **Small text never sits on a cerulean fill.** The 24px/700 service labels clear the large-text bar at 3.22:1, but 13px captions do not — `.placeholder-cerulean` therefore uses **ink** text (5.07:1), not white. This was caught in audit after being got wrong once.
-3. **Blush never carries text on paper** — the ratio is close to 1:1. Blush is a shape and background colour only. Ink on blush is 7.4:1 and deep-slate on blush is 5.6:1, both fine. Blush *on deep-slate* is 5.6:1, which is why the footer column titles use it.
+3. **Blush never carries text on white** — the ratio is close to 1:1. Blush is a shape and background colour only. Ink on blush is 7.4:1 and deep-slate on blush is 5.6:1, both fine. Blush *on deep-slate* is 5.6:1, which is why the footer column titles use it.
+4. **`--black-50` and `--black-25` are not body-text colours.** 50% Black measures 3.95:1 on white, which clears AA for large text only; 25% Black is 1.84:1 and is for rules and hairlines. Only 75% Black and `--ink` are safe for body copy.
 
-Verified against the rendered page: all text currently passes AA, all tap targets are ≥24px, heading order runs H1 → H2 → H3 with no skips.
+Moving the ground from off-white to white *raised* every text ratio — nothing needed re-fixing. Measured in the browser after the change: `--ink` 16.3:1, `--grey` 10.4:1. The cerulean numbers are unchanged, because neither the fill nor the label colour moved, so the 19px/700 button lock still applies exactly as before.
+
+**One affordance died in the collapse and was removed rather than left as dead code.** `.form-input` / `.form-select` used to rest on the off-white ground and lift to white on focus. With the two neutrals converged that swap became a no-op. Focus is carried by the 3px cerulean ring in the reset, which is both stronger than a fill change and already a brand colour.
+
+Verified against the rendered page: all text passes AA, all tap targets are ≥24px, heading order runs H1 → H2 → H3 with no skips.
 
 ---
 
@@ -67,14 +85,16 @@ Verified against the rendered page: all text currently passes AA, all tap target
 | H3 | `--fs-h3` | `clamp(1.25rem, 1.8vw, 1.5rem)` · Jost 700 |
 | Body | `--fs-body` | `1.125rem` · IBM Plex Sans 400 · lh 1.6 |
 | Body small | `--fs-body-sm` | `1rem` |
-| Label / eyebrow | `--fs-label` | `0.8125rem` · **IBM Plex Mono 500** · uppercase · `0.14em` |
+| Label / eyebrow | `--fs-label` | `0.8125rem` · IBM Plex Sans 500 · uppercase · `0.14em` |
 | Step numeral | `--fs-numeral` | `clamp(4rem, 8vw, 7.5rem)` · Jost 800 |
 
-### Third face: the mono utility label
+### Two faces, and only two
 
-Every micro-label — section eyebrows, placeholder captions, footer column titles — is set in **IBM Plex Mono**, not Jost. This is the one thing taken from the [Halden Miller](https://halden-miller.webflow.io/) reference, which sets all its small labels in Plex Mono at 10px.
+**The guide specifies exactly two typefaces. Do not add a third.** §3.1 gives the primary (Mont) headlines, titles and key messaging; §3.2 gives the secondary (Helvetica Now) body copy, supporting information, **captions** and digital content.
 
-It works here for a reason beyond taste: a technical annotation face is period-correct for Bauhaus, and the contrast between a precise mono micro-label and a 96px geometric display headline is what gives the reference's hero its tension. Ours gets the same effect without importing anything else.
+Micro-labels are captions, so they live in the secondary face. Every one of them — section eyebrows, placeholder captions, footer column titles — is set in the body face at 500, uppercase, tracked `0.14em`. The label reads as a label through **casing, tracking and scale**, not through a face of its own.
+
+An earlier build set all of these in IBM Plex Mono, borrowed from the [Halden Miller](https://halden-miller.webflow.io/) reference. It was a defensible look — a technical annotation face is period-correct for Bauhaus — but it was a third typeface the brand does not have, so it went. Dropping it also removes a Google Fonts family from every page.
 
 The eyebrow is `.eyebrow` + a `.eyebrow-marker` square:
 
@@ -82,7 +102,7 @@ The eyebrow is `.eyebrow` + a `.eyebrow-marker` square:
 <p class="eyebrow"><span class="eyebrow-marker"></span>What can we do?</p>
 ```
 
-The reference renders this as a rounded pill. A pill would break the zero-radius rule this system runs on, so the chip became a 9px solid square instead — cerulean on paper, blush on deep-slate (`.eyebrow-marker-blush`).
+The reference renders this as a rounded pill. A pill would break the zero-radius rule this system runs on, so the chip is a 9px solid square instead — cerulean on white, blush on deep-slate (`.eyebrow-marker-blush`).
 
 ### The duotone photo system
 
@@ -116,16 +136,16 @@ Three stacked layers, no images pre-processed in Photoshop — swap the source f
 
 ### Fonts — action needed for the Webflow build
 
-The real brand fonts ship in the supplied logo package, under `Amigos360_Logo_FA/Fonts/`: **Mont** (Bold / ExtraLight / Heavy) for display and **Helvetica Now Text** (Regular / Medium / Bold) for body.
+The brand faces are named in the guide — **Mont** Heavy / Bold / ExtraLight (§3.1) and **Helvetica Now** Bold / Medium / Regular (§3.2) — and ship in the supplied logo package under `Amigos360_Logo_FA/Fonts/`.
 
-They are **not** bundled here — two Mont weights are `_DEMO` files and Helvetica Now is commercially licensed. This mockup uses the closest free stand-ins from Google Fonts:
+They are **not** bundled here: two Mont weights are `_DEMO` files and Helvetica Now is commercially licensed. This mockup uses the closest free stand-ins from Google Fonts:
 
 - **Jost** stands in for Mont (both geometric, Futura-derived)
-- **IBM Plex Sans** stands in for Helvetica Now Text (both neo-grotesques), and shares its skeletons with the Plex Mono label face
+- **IBM Plex Sans** stands in for Helvetica Now (both neo-grotesques)
 
-**TODO:** if Amigos holds web licences for Mont and Helvetica Now, upload them under Webflow → Site settings → Fonts and swap `--font-display` / `--font-body`. Nothing else needs to change. If they don't, Jost + IBM Plex Sans + IBM Plex Mono is a defensible permanent choice.
+**TODO:** if Amigos holds web licences for Mont and Helvetica Now, upload them under Webflow → Site settings → Fonts and swap `--font-display` / `--font-body`. Nothing else needs to change — the two token names map 1:1 onto the guide's two faces. If they don't, Jost + IBM Plex Sans is a defensible permanent stand-in pair.
 
-Inter was the original stand-in and was replaced deliberately: it reads as generic product-UI, appears on a very large share of current sites, and does not relate to the Plex Mono label face. Plex Sans solves all three.
+Inter was the original stand-in and was replaced deliberately: it reads as generic product-UI and appears on a very large share of current sites. Plex Sans solves both.
 
 ---
 
@@ -220,9 +240,28 @@ Every module guards on element presence, so one file serves every page.
 - `amigos360-owl-{...}.svg` — owl mark alone, derived by re-`viewBox`ing the full lockup to `432 -4 154 184`
 - `amigos360-owl-wash.svg` — owl in `#DCEDF6`, the hero's low-emphasis bleed shape
 
-Navbar uses the **full-colour** lockup on paper; footer uses reverse-white on deep-slate; the sign-in card still uses deep-slate.
+The colour lockup contains white shapes (`.cls-8`) that are **knockouts** — they read as the ground showing through, not as missing artwork. Only place it on a light ground. On deep-slate or cerulean, use reverse-white instead.
 
-The colour lockup contains white shapes (`.cls-8`) that are **knockouts** — they read as the paper showing through, not as missing artwork. Only place it on a light ground. On deep-slate or cerulean, use reverse-white instead.
+### Minimum sizes — guide §1.3
+
+The guide sets a **200px digital floor for the full lockup** and **150px for the wordmark**, and §1.3 is explicit about what to do when the space is tighter: *"use the approved favicon or symbol instead of reducing the primary logo beyond its minimum size."* So the navbar steps down rather than shrinking.
+
+| Width | Mark | Rendered | Floor |
+|---|---|---|---|
+| ≥993 | full lockup | 200px | 200 ✓ |
+| 992–481 | wordmark | 164px | 150 ✓ |
+| ≤480 | owl symbol | 48px | n/a ✓ |
+
+All three `<img>` live in `.navbar-brand` and CSS shows exactly one — the same way a Webflow build would express it. All three are `alt=""`; the link itself carries the accessible name via `aria-label`.
+
+Footer uses reverse-white at 220px on deep-slate (already above the floor). The sign-in card uses the **colour wordmark** at 168px — the lockup at its old 168px was under the 200px floor.
+
+**Before this pass every navbar logo was undersized** — 190 / 164 / 142px against a 200px floor.
+
+### Outstanding — needs the client
+
+- **The approved favicon artwork is not in this repo.** §1.4 supplies it as a rounded-square container at 32/64px. The favicon currently points at `amigos360-owl-colour.svg`, which at least satisfies *"the primary colour version should always be used whenever possible"*.
+- **Every `amigos360-owl-*.svg` was derived by re-`viewBox`ing the lockup.** §1.6 lists *"do not crop or simplify the logo manually"* as a don't, so the derived owl used for the mobile navbar and the favicon is itself a minor violation. Request the official symbol file.
 
 ---
 
@@ -240,8 +279,14 @@ The colour lockup contains white shapes (`.cls-8`) that are **knockouts** — th
 - [ ] Hero eyebrow line, if wanted — deliberately left out rather than invented
 
 **Build**
-- [ ] Remaining five pages
 - [ ] Same-day turnaround asterisk on the pricing page needs its footnote text
+
+**Brand** — raised by the v2 guidelines pass, all need the client
+- [ ] Approved favicon artwork (§1.4). Not in the repo; the derived owl is a stand-in
+- [ ] Official owl symbol file — the current ones were manually re-`viewBox`ed, which §1.6 lists as a don't
+- [ ] Sign off `--cerulean-wash` / `--blush-wash` — tints of brand colours, but not in §2.1
+- [ ] Web licences for Mont and Helvetica Now, if held (§3.1 / §3.2)
+- [ ] **Positioning mismatch.** The guide's brand story describes a *"creative platform… more than a marketplace"* connecting businesses with designers. The site copy sells a *design subscription service*. Both came from the client, and the copy is used verbatim, so this is theirs to reconcile — but it should not go live unresolved.
 
 ### Checked against the client copy doc
 
@@ -286,5 +331,5 @@ Two things to know when sharing it:
 Opening `index.html` in a browser is enough. A server is only needed for tooling that blocks `file://`:
 
 ```bash
-cd amigos360 && python3 -m http.server 8765
+cd amigos360-website && python3 -m http.server 8765
 ```

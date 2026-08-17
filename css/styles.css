@@ -7,32 +7,43 @@
 
 /* ===== TOKENS ===== */
 :root {
-  /* Brand colour — sampled from the supplied logo SVGs, not approximated */
-  --cerulean:    #009ACF;   /* logo .cls-1 / .cls-7 */
-  --deep-slate:  #1C355E;   /* logo .cls-2 / .cls-3 */
-  --blush:       #F7929E;   /* logo .cls-6 */
-  --ink:         #231F20;   /* logo .cls-5 — body text + hard print shadow */
-  --grey:        #606161;   /* logo .cls-1 (colour variant) — muted text, 5.7:1 on paper */
-  --paper:       #F7F5F0;   /* off-white ground */
-  --white:       #FFFFFF;
+  /* Brand colour — Brand Guidelines v2 §2.1, cross-checked against the logo SVGs */
+  --cerulean:    #009ACF;   /* PANTONE 6121 C — logo .cls-1 / .cls-7 */
+  --deep-slate:  #1C355E;   /* PANTONE 534 C  — logo .cls-2 / .cls-3 */
+  --blush:       #F7929E;   /* PANTONE 6043 C — logo .cls-6. The guide's own RGB
+                               (245,146,159) disagrees with its HEX by ~2/255;
+                               the HEX is taken as authoritative. */
 
-  /* Tints used only as flat fills, never behind text */
+  /* Neutrals — §2.1 specifies 100% White plus a black ramp. Nothing warm. */
+  --white:       #FFFFFF;   /* 100% White */
+  --paper:       #FFFFFF;   /* Alias of --white. This was an off-white #F7F5F0
+                               ground; the guide has no second light ground, so
+                               the two converged. The name is kept so call sites
+                               still read "page ground" vs "card fill", and so
+                               a future approved tint has one place to land. */
+  --black-75:    #404040;   /* muted body text — 10.4:1 on white */
+  --black-50:    #808080;   /* 3.95:1 — large text and non-text use only */
+  --black-25:    #BFBFBF;   /* 1.84:1 — rules and hairlines only, never text */
+  --grey:        var(--black-75);
+
+  /* --ink stays off the black ramp deliberately: #231F20 is cls-5 in the
+     official logo artwork, used 11× in the lockup, so it is brand colour rather
+     than an invented neutral. It measures 16.3:1 on white; pure #000 would be
+     21:1, which is harsh at an 18px body size. */
+  --ink:         #231F20;
+
+  /* Tints of approved brand colours, used as flat fills only and never behind
+     text. Not in the guide — flagged for client sign-off. */
   --cerulean-wash: #E5F4FA;
   --blush-wash:    #FDEBED;
 
-  /* Type */
+  /* Type — the guide specifies exactly TWO faces. Do not add a third.
+     §3.1 primary (Mont) carries headlines, titles and key messaging.
+     §3.2 secondary (Helvetica Now) carries body copy, supporting information,
+     CAPTIONS and digital content — micro-labels are captions, so they belong
+     here rather than in a utility face of their own. */
   --font-display: "Jost", "Century Gothic", "Futura", sans-serif;
-  /* IBM Plex Sans, not Inter. Plex Sans and Plex Mono are one superfamily drawn
-     together, so the body text and the micro-labels share skeletons — the same
-     pairing the Halden Miller reference uses. It is also a closer stand-in for
-     the real brand face (Helvetica Now Text) than Inter, which reads as generic
-     product-UI and turns up on every third site. */
   --font-body:    "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
-  /* Utility face for every micro-label: eyebrows, placeholder captions, footer
-     column titles. Borrowed from the Halden Miller reference, which sets all its
-     small labels in IBM Plex Mono. A technical/stencil annotation face is also
-     period-correct for Bauhaus, so it costs the direction nothing. */
-  --font-mono:    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --fs-h1:      clamp(3rem, 7vw, 6rem);
   --fs-h2:      clamp(2.125rem, 4.2vw, 3rem);
@@ -146,14 +157,16 @@ summary:focus-visible {
 }
 
 /* ===== TYPOGRAPHY UTILITIES ===== */
-/* Section eyebrow. Mono label + a square marker — the reference uses a rounded
-   pill here, which would fight this system's zero-radius rule, so the chip
-   becomes a geometric primitive instead. */
+/* Section eyebrow — the body face at 500, uppercase and widely tracked, plus a
+   square marker. The label reads as a label through casing, tracking and scale
+   rather than through a face of its own (guide §3.2 puts captions in the
+   secondary font). The marker is a hard 9px square, not a pill, so it holds the
+   system's zero-radius rule. */
 .eyebrow {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.14em;
@@ -262,7 +275,15 @@ summary:focus-visible {
 
 .navbar-brand { display: block; flex-shrink: 0; }
 
-.navbar-logo { width: 190px; height: auto; }
+/* Guide §1.3 — the full lockup carries a 200px digital minimum, the wordmark a
+   150px one. Rather than shrink the lockup past its minimum on a narrow canvas,
+   §1.3 directs you to step down to the wordmark and then to the symbol. Each of
+   the three renders at or above its own floor; exactly one is visible at a
+   time. Swapping by display keeps all three in the markup, which is how a
+   Webflow build would express it too. */
+.navbar-logo     { width: 200px; height: auto; }
+.navbar-wordmark { width: 164px; height: auto; display: none; }
+.navbar-symbol   { width: 48px;  height: auto; display: none; }
 
 .nav-menu {
   display: flex;
@@ -336,7 +357,7 @@ summary:focus-visible {
 }
 
 .footer-col-title {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.16em;
@@ -498,7 +519,7 @@ summary:focus-visible {
   left: var(--s-md);
   bottom: var(--s-md);
   z-index: 2;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -518,7 +539,7 @@ summary:focus-visible {
 }
 
 .placeholder-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -669,7 +690,7 @@ summary:focus-visible {
 }
 
 .proof-slot {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.14em;
@@ -904,7 +925,10 @@ summary:focus-visible {
   .nav-divider { display: none; }
   .nav-cta { margin-top: var(--s-md); }
   .navbar-inner { position: relative; }
-  .navbar-logo { width: 164px; }
+
+  /* Below the lockup's 200px floor — step down to the wordmark (§1.3). */
+  .navbar-logo     { display: none; }
+  .navbar-wordmark { display: block; }
 
   .hero-inner { grid-template-columns: 1fr; gap: var(--s-xl); }
   .hero-figure { max-width: 440px; }
@@ -941,7 +965,10 @@ summary:focus-visible {
 /* ----- 480px (mobile portrait) ----- */
 @media screen and (max-width: 480px) {
   .navbar-inner { min-height: 72px; }
-  .navbar-logo { width: 142px; }
+
+  /* Below the wordmark's 150px floor too — step down to the symbol (§1.3). */
+  .navbar-wordmark { display: none; }
+  .navbar-symbol   { display: block; }
 
   .hero-actions { flex-direction: column; align-items: stretch; }
   .hero-triangle { border-left-width: 30px; border-right-width: 30px; border-bottom-width: 54px; }
@@ -1016,7 +1043,7 @@ summary:focus-visible {
   border: var(--border-w) solid var(--ink);
   background-color: transparent;
   color: var(--ink);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -1032,7 +1059,7 @@ summary:focus-visible {
 .filter-button-active:hover { background-color: var(--deep-slate); }
 
 .filter-status {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
   color: var(--grey);
   margin-bottom: var(--s-md);
@@ -1106,7 +1133,7 @@ summary:focus-visible {
   padding: 4px 10px;
   background-color: var(--blush);
   color: var(--ink);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.1em;
@@ -1121,7 +1148,7 @@ summary:focus-visible {
 }
 
 .plan-note {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 0.6875rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1135,7 +1162,7 @@ summary:focus-visible {
   border-bottom: var(--rule-strong);
   background-color: var(--deep-slate);
   color: var(--white);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.14em;
@@ -1205,7 +1232,7 @@ summary:focus-visible {
 .plan-card-body { padding: var(--s-md); }
 
 .plan-card-group {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.14em;
@@ -1350,7 +1377,7 @@ summary:focus-visible {
 .form-label {
   display: block;
   margin-bottom: 6px;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -1369,8 +1396,11 @@ summary:focus-visible {
   font-size: var(--fs-body-sm);
   color: var(--ink);
 }
-.form-input:focus,
-.form-select:focus { background-color: var(--white); }
+/* The resting fill used to be the off-white paper ground, so focus lifted the
+   field to white. With --paper and --white converged on the guide's single
+   light neutral that swap became a no-op, so it is gone rather than left as
+   dead code. Focus is carried by the 3px cerulean ring in the reset, which is
+   both stronger than a fill change and already a brand colour. */
 
 .form-input-error { border-color: #C0392B; }
 
@@ -1399,7 +1429,7 @@ summary:focus-visible {
   padding: var(--s-lg);
   border: var(--border-w) dashed var(--grey);
   text-align: center;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--fs-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1445,6 +1475,8 @@ summary:focus-visible {
   box-shadow: var(--print-shadow);
 }
 
+/* The wordmark, not the full lockup — 168px sits under the lockup's 200px floor
+   but clears the wordmark's 150px one (§1.3). */
 .signin-logo { width: 168px; margin-bottom: var(--s-lg); }
 
 .signin-title {
